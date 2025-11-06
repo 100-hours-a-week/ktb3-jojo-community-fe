@@ -1,0 +1,76 @@
+.list-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.list-header-text {
+  text-align: center;
+  font-size: 24px;
+  margin: 4px 0;
+}
+
+.list-header-button {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+/* 카드 아이템 */
+
+.list-item {
+  border-radius: 4px;
+  margin-bottom: 12px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  > div {
+    padding: 12px;
+  }
+}
+
+.list-item:hover {
+  background-color: #f0f0f0;
+}
+
+.list-item-header {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  gap: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.list-item-title {
+  font-weight: 600;
+  color: #333;
+}
+
+.list-item-footer {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+}
+
+.list-item-meta {
+  font-size: 12px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  color: #999;
+}
+
+.list-item-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #ddd;
+}
+
+.list-item-content {
+  font-size: 13px;
+}

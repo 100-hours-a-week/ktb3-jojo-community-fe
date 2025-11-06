@@ -64,6 +64,12 @@ body {
   background-color: #dad5ff;
 }
 
+.btn-small {
+  width: fit-content;
+  border-radius: 8px;
+  padding: 12px 30px;
+}
+
 /* 폼 */
 .form-group {
   margin-bottom: 20px;
