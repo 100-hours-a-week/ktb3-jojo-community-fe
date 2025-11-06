@@ -1,0 +1,32 @@
+.signup-box {
+  padding: 20px;
+}
+
+.form-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.profile-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #ddd;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ccc;
+  cursor: pointer;
+}
+
+.profile-photo:hover {
+  background-color: #e8e8e8;
+}
+
+.plus-icon {
+  font-size: 40px;
+  color: #999;
+}
