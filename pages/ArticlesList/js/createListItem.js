@@ -1,49 +1,41 @@
-//TODO: 나누기
+import { PATHS } from "../../../shared/constants/paths.js";
 
 // const dummyImg = "https://dummyimage.com/300";
 
-export function createListItem(post) {
-  const { articleId, title: postTitle, createdAt, author, status } = post;
+export function createListItem(article, templateId) {
+  const template = document.getElementById(templateId).content.cloneNode(true);
+  const templateTitle = template.querySelector(".list-item-title");
+  const templateHeader = template.querySelector(".list-item-header");
+  const metas = template.querySelectorAll(".list-item-meta > div");
+
+  const footer = template.querySelector(".list-item-footer");
+  // const footerAvatar = template.querySelector(".list-item-avatar");
+  const footerUser = template.querySelector(".list-item-user");
+
+  const { articleId, title: postTitle, createdAt, author, status } = article;
   const { id: authorId, nickname, profileImageUrl } = author;
   const { likes, comments, views } = status;
 
-  const listItem = document.createElement("div");
-  listItem.className = "list-item";
-  listItem.setAttribute("id", articleId); //TODO: click 이벤트를 등록?
+  const rootElement = template.firstElementChild;
+  rootElement.id = `article-${articleId}`;
 
-  const header = document.createElement("div");
-  header.className = "list-item-header";
+  template.id = articleId;
+  templateTitle.textContent = postTitle;
 
-  const title = document.createElement("div");
-  title.className = "list-item-title";
-  title.textContent = postTitle;
+  metas[0].textContent = `좋아요 ${likes} 댓글 ${comments} 조회수 ${views}`;
+  metas[1].textContent = createdAt;
 
-  const meta = document.createElement("div");
-  meta.className = "list-item-meta";
+  footer.id = `author-${authorId}`;
+  footerUser.textContent = nickname;
 
-  const metaStats = document.createElement("div");
-  metaStats.textContent = `좋아요 ${likes} 댓글 ${comments} 조회수 ${views}`;
+  templateHeader.addEventListener("click", (e) => {
+    e.stopPropagation();
+    window.location.href = PATHS.ARTICLE_DETAIL.ABSOLUTE(articleId);
+  });
 
-  const metaDate = document.createElement("div");
-  metaDate.textContent = createdAt;
+  //TODO: 이미지 넣기
 
-  meta.append(metaStats, metaDate);
-  header.append(title, meta);
+  footerUser.textContent = nickname;
 
-  const footer = document.createElement("div");
-  footer.className = "list-item-footer";
-  footer.setAttribute("id", authorId); //TODO: click 이벤트를 등록?
-
-  const avatar = document.createElement("div");
-  avatar.className = "list-item-avatar"; //TODO: image 넣기
-
-  const content = document.createElement("div");
-  content.className = "list-item-content";
-  content.textContent = nickname;
-
-  footer.append(avatar, content);
-
-  listItem.append(header, footer);
-
-  return listItem;
+  return template;
 }

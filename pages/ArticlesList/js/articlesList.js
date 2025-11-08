@@ -12,7 +12,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const { items: articles } = data;
 
-  const listItems = articles.map(createListItem);
+  const listItems = articles.map((article) =>
+    createListItem(article, "list-item-template")
+  );
+
   listItems.forEach((element) => {
     list.appendChild(element);
   });
