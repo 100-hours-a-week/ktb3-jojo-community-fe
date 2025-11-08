@@ -29,7 +29,7 @@ function validation() {
   return valid;
 }
 
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const valid = validation();
@@ -41,11 +41,11 @@ form.addEventListener("submit", (e) => {
     password: pwInput.value.trim(),
   };
 
-  fetchWrapper.post({
+  await fetchWrapper.post({
     url: SERVER_URL.USER.LOGIN,
     payload,
-    onSuccess: (statusText) => {
-      alert(statusText);
+    onSuccess: (data) => {
+      alert(data.message);
       window.location.replace(PATHS.ARTICLES_LIST.ABSOLUTE);
     },
     onError: alert,

@@ -54,11 +54,11 @@ export const fetchWrapper = {
  * @param {Response} response
  * @returns
  */
-function handleResponse(response, onSuccess, onError) {
-  const data = response.json();
+async function handleResponse(response, onSuccess, onError) {
+  const data = await response.json();
 
   if (response.ok) {
-    onSuccess(response.statusText);
+    onSuccess(data);
     return data;
   }
 

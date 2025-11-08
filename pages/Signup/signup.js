@@ -43,7 +43,7 @@ btnCancel.addEventListener("click", () => {
 });
 
 // 회원가입 요청
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const payload = {
     email: emailInput.value.trim(),
@@ -54,16 +54,17 @@ form.addEventListener("submit", (e) => {
 
   // console.log(payload);
 
-  fetchWrapper.post({
+  await fetchWrapper.post({
     url: SERVER_URL.USER.SIGNUP,
     payload,
-    onSuccess: (statusText) => {
-      alert(statusText);
+    onSuccess: (data) => {
+      console.log(data);
+      alert(data.message);
       closeModal("signupConfirm");
       window.location.replace(PATHS.LOGIN.ABSOLUTE);
     },
-    onError: (statusText) => {
-      alert(statusText);
+    onError: (error) => {
+      alert(error);
       closeModal("signupConfirm");
     },
   });
