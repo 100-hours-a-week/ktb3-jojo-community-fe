@@ -4,7 +4,7 @@ const COMMENT_URL = `${BASE_URL}/comments`;
 const ARTICLE_URL = `${BASE_URL}/article`;
 const LIKE_URL = `${BASE_URL}/like`;
 
-export const SERVER_URL = () => ({
+const SERVER_URL_FUNCTION = () => ({
   USER: {
     LOGIN: `${USER_URL}/login`,
     LOGOUT: `${USER_URL}/current/logout`,
@@ -30,3 +30,5 @@ export const SERVER_URL = () => ({
     UNLIKE: (articleId) => `${LIKE_URL}/${articleId}`,
   },
 });
+
+export const SERVER_URL = SERVER_URL_FUNCTION();

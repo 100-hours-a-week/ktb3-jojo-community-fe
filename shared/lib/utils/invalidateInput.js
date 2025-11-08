@@ -3,8 +3,8 @@
  * @returns
  */
 
-export const invalidateUserID = (idInput, errorCallback) => {
-  if (idInput.trim()) return;
+export const invalidateEmail = (emailInput, errorCallback) => {
+  if (emailInput.trim()) return;
   errorCallback();
 };
 

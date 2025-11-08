@@ -1,5 +1,5 @@
 export const fetchWrapper = {
-  get: async (url, onSuccess, onError) => {
+  get: async ({ url, onSuccess, onError }) => {
     const requestOptions = {
       method: "GET",
     };
@@ -7,29 +7,40 @@ export const fetchWrapper = {
     return handleResponse(res, onSuccess, onError);
   },
 
-  post: async (url, body, onSuccess, onError) => {
+  post: async ({ url, payload, onSuccess, onError }) => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify(body),
+      body: JSON.stringify(payload),
     };
     const res = await fetch(url, requestOptions);
     return handleResponse(res, onSuccess, onError);
   },
 
-  put: async (url, body, onSuccess, onError) => {
+  put: async ({ url, payload, onSuccess, onError }) => {
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify(body),
+      body: JSON.stringify(payload),
     };
     const res = await fetch(url, requestOptions);
     return handleResponse(res, onSuccess, onError);
   },
 
-  _delete: async (url, onSuccess, onError) => {
+  patch: async ({ url, payload, onSuccess, onError }) => {
+    const requestOptions = {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(payload),
+    };
+    const res = await fetch(url, requestOptions);
+    return handleResponse(res, onSuccess, onError);
+  },
+
+  _delete: async ({ url, onSuccess, onError }) => {
     const requestOptions = {
       method: "DELETE",
     };

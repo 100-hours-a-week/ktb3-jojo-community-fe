@@ -7,7 +7,7 @@ import {
   invalidateNickname,
   invalidatePassword,
   invalidatePasswordConfirm,
-  invalidateUserID,
+  invalidateEmail,
 } from "../../shared/lib/utils/invalidateInput.js";
 import {
   openModal,
@@ -42,7 +42,7 @@ btnCancel.addEventListener("click", () => {
 });
 
 // 회원가입 요청
-form.addEventListener("submit", async (e) => {
+form.addEventListener("submit", (e) => {
   e.preventDefault();
   const payload = {
     email: emailInput.value.trim(),
@@ -53,19 +53,19 @@ form.addEventListener("submit", async (e) => {
 
   // console.log(payload);
 
-  fetchWrapper.post(
-    SERVER_URL().USER.SIGNUP,
+  fetchWrapper.post({
+    url: SERVER_URL.USER.SIGNUP,
     payload,
-    (statusText) => {
+    onSuccess: (statusText) => {
       alert(statusText);
       closeModal("signupConfirm");
       window.location.replace(PATHS.LOGIN.ABSOLUTE);
     },
-    (statusText) => {
+    onError: (statusText) => {
       alert(statusText);
       closeModal("signupConfirm");
-    }
-  );
+    },
+  });
 });
 
 // input validate
@@ -74,7 +74,7 @@ btnOpenModal.addEventListener("click", (e) => {
 
   let valid = true;
 
-  invalidateUserID(emailInput.value, () => {
+  invalidateEmail(emailInput.value, () => {
     showError(emailInput, "이메일 입력해주세요.");
     valid = false;
   });
