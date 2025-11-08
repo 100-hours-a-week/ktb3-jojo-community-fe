@@ -1,11 +1,20 @@
-import { clearError, showError } from "../../shared/domHandler/errorHandle.js";
+import {
+  clearError,
+  showError,
+} from "../../shared/lib/domHandler/errorHandle.js";
 import { SERVER_URL } from "../../api/constants/endpoint.js";
 import {
   invalidateNickname,
   invalidatePassword,
   invalidatePasswordConfirm,
   invalidateUserID,
-} from "../../shared/utils/invalidateInput.js";
+} from "../../shared/lib/utils/invalidateInput.js";
+import {
+  openModal,
+  closeModal,
+} from "../../shared/lib/domHandler/modalHandle.js";
+import { fetchWrapper } from "../../api/fetchWrapper.js";
+import { PATHS } from "../../shared/constants/paths.js";
 
 const form = document.getElementById("signupForm");
 const modal = document.getElementById("signupConfirm");
@@ -16,14 +25,6 @@ const emailInput = form.querySelector('input[name="email"]');
 const pwInput = form.querySelector('input[name="password"]');
 const pw2Input = form.querySelector('input[name="passwordConfirm"]');
 const nickInput = form.querySelector('input[name="nickname"]');
-
-function openModal() {
-  modal.classList.add("active");
-}
-
-function closeModal() {
-  modal.classList.remove("active");
-}
 
 document.addEventListener("DOMContentLoaded", () => {
   // 입력 필드 배열
@@ -37,9 +38,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 btnCancel.addEventListener("click", () => {
-  closeModal();
+  closeModal(modal);
 });
-// 모달 확인 → 서버로 회원가입 요청
+
+// 회원가입 요청
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const payload = {
@@ -51,35 +53,22 @@ form.addEventListener("submit", async (e) => {
 
   console.log(payload);
 
-  try {
-    const res = await fetch(SERVER_URL().USER.SIGNUP, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(payload),
-    });
-
-    if (!res.ok) {
-      const data = await res.json();
-      const msg = data.message || "회원가입 실패";
-      alert(msg);
-      closeModal();
-      return;
+  fetchWrapper.post(
+    SERVER_URL().USER.SIGNUP,
+    payload,
+    (statusText) => {
+      alert(statusText);
+      closeModal(modal);
+      window.location.href = PATHS.LOGIN.ABSOLUTE;
+    },
+    (statusText) => {
+      alert(statusText);
+      closeModal(modal);
     }
-
-    alert("회원가입이 완료되었습니다!");
-    closeModal();
-
-    window.location.href = "pages/Login/login.html";
-  } catch (err) {
-    console.error(err);
-    alert("네트워크 오류가 발생했습니다.");
-    closeModal();
-  }
+  );
 });
 
+// input validate
 btnOpenModal.addEventListener("click", (e) => {
   e.preventDefault();
 
@@ -107,5 +96,5 @@ btnOpenModal.addEventListener("click", (e) => {
 
   if (!valid) return;
 
-  openModal();
+  openModal(modal);
 });
