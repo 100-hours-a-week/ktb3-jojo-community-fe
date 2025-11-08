@@ -1,4 +1,4 @@
-const BASE_PATH = "pages";
+const BASE_PATH = "/pages";
 
 export const PATHS = {
   ARTICLE_DETAIL: {

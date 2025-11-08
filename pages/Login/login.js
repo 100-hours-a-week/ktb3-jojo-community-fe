@@ -1,5 +1,6 @@
 import { SERVER_URL } from "../../api/constants/endpoint.js";
 import { fetchWrapper } from "../../api/fetchWrapper.js";
+import { INPUT_HELPER_TEXT } from "../../shared/constants/error.js";
 import { PATHS } from "../../shared/constants/paths.js";
 import { showError } from "../../shared/lib/domHandler/errorHandle.js";
 import {
@@ -16,12 +17,12 @@ function validation() {
   let valid = true;
 
   invalidateEmail(emailInput.value, () => {
-    showError(emailInput, "이메일 입력해주세요.");
+    showError(emailInput, INPUT_HELPER_TEXT.ENTER_EMAIL);
     valid = false;
   });
 
   invalidatePassword(pwInput.value, () => {
-    showError(pwInput, "비밀번호를 입력해주세요.");
+    showError(pwInput, INPUT_HELPER_TEXT.ENTER_PASSWORD);
     valid = false;
   });
 

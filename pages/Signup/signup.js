@@ -15,6 +15,7 @@ import {
 } from "../../shared/lib/domHandler/commonHandle.js";
 import { fetchWrapper } from "../../api/fetchWrapper.js";
 import { PATHS } from "../../shared/constants/paths.js";
+import { INPUT_HELPER_TEXT } from "../../shared/constants/error.js";
 
 const form = document.getElementById("signupForm");
 const modal = document.getElementById("signupConfirm");
@@ -75,22 +76,22 @@ btnOpenModal.addEventListener("click", (e) => {
   let valid = true;
 
   invalidateEmail(emailInput.value, () => {
-    showError(emailInput, "이메일 입력해주세요.");
+    showError(emailInput, INPUT_HELPER_TEXT.ENTER_EMAIL);
     valid = false;
   });
 
   invalidatePassword(pwInput.value, () => {
-    showError(pwInput, "비밀번호를 입력해주세요.");
+    showError(pwInput, INPUT_HELPER_TEXT.ENTER_PASSWORD);
     valid = false;
   });
 
   invalidatePasswordConfirm(pwInput.value, pw2Input.value, () => {
-    showError(pw2Input, "비밀번호가 일치하지 않습니다.");
+    showError(pw2Input, INPUT_HELPER_TEXT.PASSWORD_IS_NOT_MATCHED);
     valid = false;
   });
 
   invalidateNickname(nickInput.value, () => {
-    showError(nickInput, "닉네임을 입력해주세요.");
+    showError(nickInput, INPUT_HELPER_TEXT.ENTER_NICKNAME);
     valid = false;
   });
 
