@@ -13,7 +13,8 @@ const SERVER_URL_FUNCTION = () => ({
     CURRENT: `${USER_URL}/current`,
   },
   ARTICLE: {
-    LIST: `${ARTICLE_URL}`,
+    LIST: ({ currentPage = 1, sort = "viewCnt" }) =>
+      `${ARTICLE_URL}?currentPage=${currentPage}&pageSize=20&sort=${sort}`,
     CREATE: `${ARTICLE_URL}`,
     DETAIL: (articleId) => `${ARTICLE_URL}/${articleId}`,
     UPDATE: (articleId) => `${ARTICLE_URL}/${articleId}`,
