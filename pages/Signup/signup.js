@@ -12,7 +12,7 @@ import {
 import {
   openModal,
   closeModal,
-} from "../../shared/lib/domHandler/modalHandle.js";
+} from "../../shared/lib/domHandler/commonHandle.js";
 import { fetchWrapper } from "../../api/fetchWrapper.js";
 import { PATHS } from "../../shared/constants/paths.js";
 
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 btnCancel.addEventListener("click", () => {
-  closeModal(modal);
+  closeModal("signupConfirm");
 });
 
 // 회원가입 요청
@@ -51,19 +51,19 @@ form.addEventListener("submit", async (e) => {
     profileImageUrl: "http://",
   };
 
-  console.log(payload);
+  // console.log(payload);
 
   fetchWrapper.post(
     SERVER_URL().USER.SIGNUP,
     payload,
     (statusText) => {
       alert(statusText);
-      closeModal(modal);
-      window.location.href = PATHS.LOGIN.ABSOLUTE;
+      closeModal("signupConfirm");
+      window.location.replace(PATHS.LOGIN.ABSOLUTE);
     },
     (statusText) => {
       alert(statusText);
-      closeModal(modal);
+      closeModal("signupConfirm");
     }
   );
 });
@@ -96,5 +96,5 @@ btnOpenModal.addEventListener("click", (e) => {
 
   if (!valid) return;
 
-  openModal(modal);
+  openModal("signupConfirm");
 });
