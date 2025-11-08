@@ -16,6 +16,7 @@ import {
 import { fetchWrapper } from "../../api/fetchWrapper.js";
 import { PATHS } from "../../shared/constants/paths.js";
 import { INPUT_HELPER_TEXT } from "../../shared/constants/error.js";
+import { goBack } from "../../shared/lib/domHandler/goBackHandle.js";
 
 const form = document.getElementById("signupForm");
 const modal = document.getElementById("signupConfirm");
@@ -36,10 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
   inputs.forEach((input) => {
     input.addEventListener("input", () => clearError(input));
   });
-});
-
-btnCancel.addEventListener("click", () => {
-  closeModal("signupConfirm");
 });
 
 // 회원가입 요청
@@ -100,3 +97,9 @@ btnOpenModal.addEventListener("click", (e) => {
 
   openModal("signupConfirm");
 });
+
+btnCancel.addEventListener("click", () => {
+  closeModal("signupConfirm");
+});
+
+goBack("goBackArrow", PATHS.LOGIN.ABSOLUTE);

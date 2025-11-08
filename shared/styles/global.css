@@ -28,10 +28,33 @@ textarea {
   width: 100%;
   overflow: hidden;
 }
+
+/* header */
 .header {
   padding: 20px;
-  text-align: center;
   border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > div {
+    width: 100%;
+    max-width: 50rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+/* header arror */
+
+.left-arrow {
+  cursor: pointer;
 }
 
 .container-item {
@@ -39,15 +62,6 @@ textarea {
   max-width: 50rem;
   margin: 0 auto;
   padding: 20px;
-}
-
-.container-item-inner {
-}
-
-.header h1 {
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
 }
 
 /* 버튼 */
@@ -121,8 +135,12 @@ textarea {
   justify-content: center;
 }
 
-.modal.active {
+.active {
   display: flex;
+}
+
+.deactivate {
+  visibility: hidden;
 }
 
 .modal-content {
