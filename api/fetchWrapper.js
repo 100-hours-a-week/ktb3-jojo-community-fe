@@ -1,4 +1,4 @@
-export const fetchWrapper = {
+const _fetch = () => ({
   get: async ({ url, onSuccess, onError }) => {
     const requestOptions = {
       method: "GET",
@@ -47,7 +47,7 @@ export const fetchWrapper = {
     const res = await fetch(url, requestOptions);
     return handleResponse(res, onSuccess, onError);
   },
-};
+});
 
 /**
  *
@@ -69,3 +69,5 @@ async function handleResponse(response, onSuccess, onError) {
   onError?.(error);
   return data;
 }
+
+export const fetchWrapper = _fetch();
