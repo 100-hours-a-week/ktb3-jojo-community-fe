@@ -39,7 +39,7 @@ textarea {
 
   > div {
     width: 100%;
-    max-width: 50rem;
+    max-width: 45rem;
     display: flex;
     justify-content: space-between;
     align-items: center;

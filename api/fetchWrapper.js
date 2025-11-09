@@ -1,7 +1,7 @@
 const _fetch = () => {
-  const baseRequestOptions = (method) => ({
+  const baseRequestOptions = (method, isFormData = false) => ({
     method,
-    headers: { "Content-Type": "application/json" },
+    headers: isFormData ? {} : { "Content-Type": "application/json" },
     credentials: "include",
   });
 
@@ -15,27 +15,31 @@ const _fetch = () => {
     },
 
     post: async ({ url, payload, onSuccess, onError }) => {
+      const isFormData = payload instanceof FormData;
+
       const requestOptions = {
-        ...baseRequestOptions("POST"),
-        body: JSON.stringify(payload),
+        ...baseRequestOptions("POST", isFormData),
+        body: isFormData ? payload : JSON.stringify(payload),
       };
       const res = await fetch(url, requestOptions);
       return handleResponse(res, onSuccess, onError);
     },
 
     put: async ({ url, payload, onSuccess, onError }) => {
+      const isFormData = payload instanceof FormData;
       const requestOptions = {
-        ...baseRequestOptions("PUT"),
-        body: JSON.stringify(payload),
+        ...baseRequestOptions("PUT", isFormData),
+        body: isFormData ? payload : JSON.stringify(payload),
       };
       const res = await fetch(url, requestOptions);
       return handleResponse(res, onSuccess, onError);
     },
 
     patch: async ({ url, payload, onSuccess, onError }) => {
+      const isFormData = payload instanceof FormData;
       const requestOptions = {
-        ...baseRequestOptions("PATCH"),
-        body: JSON.stringify(payload),
+        ...baseRequestOptions("PATCH", isFormData),
+        body: isFormData ? payload : JSON.stringify(payload),
       };
       const res = await fetch(url, requestOptions);
       return handleResponse(res, onSuccess, onError);

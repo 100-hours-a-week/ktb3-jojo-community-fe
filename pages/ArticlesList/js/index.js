@@ -1,8 +1,10 @@
 import { SERVER_URL } from "../../../api/constants/endpoint.js";
 import { fetchWrapper } from "../../../api/fetchWrapper.js";
+import { PATHS } from "../../../shared/constants/paths.js";
 import { createListItem } from "./createListItem.js";
 
 const list = document.getElementById("list");
+const btnCreateArticle = document.getElementById("btnCreateArticle");
 
 document.addEventListener("DOMContentLoaded", async () => {
   const { data } = await fetchWrapper.get({
@@ -19,4 +21,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   listItems.forEach((element) => {
     list.appendChild(element);
   });
+});
+
+btnCreateArticle.addEventListener("click", () => {
+  window.location.href = PATHS.ARTICLE_EDITOR.ABSOLUTE;
 });
