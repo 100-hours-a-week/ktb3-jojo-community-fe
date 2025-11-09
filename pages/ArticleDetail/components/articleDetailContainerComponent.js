@@ -22,8 +22,8 @@ export const articleDetailContainerComponent = ({
             </div>
             <div class="detail-header-meta-date">${createdAt}</div>
           </div>
+          ${actionButtonHTML}
         </div>
-        ${actionButtonHTML}
       </div>
 
       <div class="post-content">${contents}</div>

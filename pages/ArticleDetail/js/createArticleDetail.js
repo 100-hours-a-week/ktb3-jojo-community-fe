@@ -22,6 +22,7 @@ export function createArticleContainer(articleData) {
     author,
     status,
     createdAt,
+    imageUrls,
     likedByMe,
     isMyContents,
   } = articleData;
