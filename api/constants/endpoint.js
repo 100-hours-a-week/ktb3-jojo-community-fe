@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080/api";
+const BASE_URL = "http://127.0.0.1:8080/api";
 const USER_URL = `${BASE_URL}/user`;
 const COMMENT_URL = `${BASE_URL}/comments`;
 const ARTICLE_URL = `${BASE_URL}/article`;

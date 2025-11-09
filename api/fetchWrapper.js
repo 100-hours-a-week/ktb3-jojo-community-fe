@@ -1,54 +1,55 @@
-const _fetch = () => ({
-  get: async ({ url, onSuccess, onError }) => {
-    const requestOptions = {
-      method: "GET",
-    };
-    const res = await fetch(url, requestOptions);
-    return handleResponse(res, onSuccess, onError);
-  },
+const _fetch = () => {
+  const baseRequestOptions = (method) => ({
+    method,
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  });
 
-  post: async ({ url, payload, onSuccess, onError }) => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(payload),
-    };
-    const res = await fetch(url, requestOptions);
-    return handleResponse(res, onSuccess, onError);
-  },
+  return {
+    get: async ({ url, onSuccess, onError }) => {
+      const requestOptions = {
+        ...baseRequestOptions("GET"),
+      };
+      const res = await fetch(url, requestOptions);
+      return handleResponse(res, onSuccess, onError);
+    },
 
-  put: async ({ url, payload, onSuccess, onError }) => {
-    const requestOptions = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(payload),
-    };
-    const res = await fetch(url, requestOptions);
-    return handleResponse(res, onSuccess, onError);
-  },
+    post: async ({ url, payload, onSuccess, onError }) => {
+      const requestOptions = {
+        ...baseRequestOptions("POST"),
+        body: JSON.stringify(payload),
+      };
+      const res = await fetch(url, requestOptions);
+      return handleResponse(res, onSuccess, onError);
+    },
 
-  patch: async ({ url, payload, onSuccess, onError }) => {
-    const requestOptions = {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(payload),
-    };
-    const res = await fetch(url, requestOptions);
-    return handleResponse(res, onSuccess, onError);
-  },
+    put: async ({ url, payload, onSuccess, onError }) => {
+      const requestOptions = {
+        ...baseRequestOptions("PUT"),
+        body: JSON.stringify(payload),
+      };
+      const res = await fetch(url, requestOptions);
+      return handleResponse(res, onSuccess, onError);
+    },
 
-  _delete: async ({ url, onSuccess, onError }) => {
-    const requestOptions = {
-      method: "DELETE",
-    };
-    const res = await fetch(url, requestOptions);
-    return handleResponse(res, onSuccess, onError);
-  },
-});
+    patch: async ({ url, payload, onSuccess, onError }) => {
+      const requestOptions = {
+        ...baseRequestOptions("PATCH"),
+        body: JSON.stringify(payload),
+      };
+      const res = await fetch(url, requestOptions);
+      return handleResponse(res, onSuccess, onError);
+    },
 
+    _delete: async ({ url, onSuccess, onError }) => {
+      const requestOptions = {
+        ...baseRequestOptions("DELETE"),
+      };
+      const res = await fetch(url, requestOptions);
+      return handleResponse(res, onSuccess, onError);
+    },
+  };
+};
 /**
  *
  * @param {Response} response
