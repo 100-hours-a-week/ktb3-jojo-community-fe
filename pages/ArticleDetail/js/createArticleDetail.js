@@ -40,6 +40,7 @@ export function createArticleContainer(articleData) {
     author,
     createdAt,
     actionButtonHTML,
+    imageUrls,
     contents,
     statusHTML,
   }).getDom();

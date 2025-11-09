@@ -8,6 +8,14 @@
   margin-bottom: 8px;
 }
 
+/**이미지*/
+
+.post-images img {
+  background-color: #d9d9d9;
+  height: fit-content;
+  max-height: 306px;
+}
+
 .post-content {
   background-color: #f5f5f5;
   padding: 20px;

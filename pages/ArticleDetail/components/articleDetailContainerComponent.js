@@ -5,10 +5,14 @@ export const articleDetailContainerComponent = ({
   author,
   createdAt,
   actionButtonHTML,
+  imageUrls,
   contents,
   statusHTML,
 }) => {
   const { profileImageUrl, nickname } = author;
+  const imageUrlsHTML = imageUrls.reduce((acc, curValue) => {
+    return acc + `<img src=${curValue}/>`;
+  }, "");
 
   return NodeElement(`
     <div class="container-item">
@@ -25,7 +29,7 @@ export const articleDetailContainerComponent = ({
           ${actionButtonHTML}
         </div>
       </div>
-
+      <div class="post-images flex_col_gap1">${imageUrlsHTML}</div>
       <div class="post-content">${contents}</div>
 
       <div class="post-stats">
