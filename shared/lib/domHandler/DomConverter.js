@@ -3,13 +3,13 @@
  * @param {*} param0
  */
 
-export function DomConverter(context) {
+export function domConverter(context) {
   const range = document.createRange();
   const fragment = range.createContextualFragment(context);
   return fragment;
 }
 
-export function AttachDomToRoot({ rootId, fragment }) {
+export function attachDomToRoot({ rootId, fragment }) {
   const root = document.getElementById(rootId);
   root.appendChild(fragment);
 }

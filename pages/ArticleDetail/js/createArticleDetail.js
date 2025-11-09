@@ -1,11 +1,8 @@
+import { attachDomToRoot } from "../../../shared/lib/domHandler/DomConverter.js";
 import {
-  AttachDomToRoot,
-  DomConverter,
-} from "../../../shared/lib/domHandler/DomConverter.js";
-import {
-  statContext,
-  actionsBtnContext,
-  commentItemContext,
+  statComponent,
+  actionsBtnComponent,
+  commentItemComponent,
 } from "../components/index.js";
 
 /**
@@ -49,7 +46,7 @@ export function createArticleContainer(articleData) {
   const statusCategories = Object.keys(status);
 
   statusCategories.forEach((key) => {
-    const node = DomConverter(statContext);
+    const node = statComponent();
     const statNum = node.querySelector(".stat-number");
     const statLabel = node.querySelector(".stat-label");
     statNum.textContent = `${status[key]}`;
@@ -61,8 +58,8 @@ export function createArticleContainer(articleData) {
   /** 내 게시글이면 액션 버튼 넣기 */
   if (!isMyContents) return template;
 
-  const actionBtnNode = DomConverter(actionsBtnContext);
-  AttachDomToRoot({ rootId: "actionButtons", fragment: actionBtnNode });
+  const actionBtnNode = actionsBtnComponent();
+  attachDomToRoot({ rootId: "actionButtons", fragment: actionBtnNode });
 
   return template;
 }
@@ -79,7 +76,7 @@ export function createArticleCommentsItems(commentsData) {
   const commentsContainer = document.getElementById("articleCommentSection");
 
   commentsData.forEach((commentData) => {
-    const node = DomConverter(commentItemContext);
+    const node = commentItemComponent();
 
     const authorNickname = node.querySelector(".comment-author-nickname");
     const commentDate = node.querySelector(".comment-date");
@@ -93,7 +90,7 @@ export function createArticleCommentsItems(commentsData) {
 
     // 내 댓글이면 액션 버튼 추가
     if (editable) {
-      const actionBtnNode = DomConverter(actionsBtnContext);
+      const actionBtnNode = actionsBtnComponent();
       node.appendChild(actionBtnNode);
     }
 
