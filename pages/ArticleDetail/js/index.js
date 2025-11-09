@@ -29,5 +29,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   detail.appendChild(articleDetailElement);
 
   const { items: commentsDataList } = commentsRes.data;
-  createArticleCommentsItems(commentsDataList);
+  createArticleCommentsItems(commentsDataList, articleId);
 });

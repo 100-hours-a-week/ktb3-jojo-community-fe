@@ -1,4 +1,5 @@
 import { articleDetailContainerComponent } from "../components/articleDetailContainerComponent.js";
+import { attachCommentFormListener } from "./createCommentListener.js";
 import {
   statComponent,
   actionsBtnComponent,
@@ -16,7 +17,6 @@ import {
 
 export function createArticleContainer(articleData) {
   const {
-    articleId,
     title,
     contents,
     author,
@@ -56,7 +56,7 @@ export function createArticleContainer(articleData) {
  * >} commentsData
  */
 
-export function createArticleCommentsItems(commentsData) {
+export function createArticleCommentsItems(commentsData, articleId) {
   const commentsContainer = document.getElementById("articleCommentSection");
 
   commentsData.forEach((commentData) => {
@@ -73,4 +73,6 @@ export function createArticleCommentsItems(commentsData) {
 
     commentsContainer.appendChild(node.getDom());
   });
+
+  attachCommentFormListener(articleId);
 }
