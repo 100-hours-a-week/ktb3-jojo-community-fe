@@ -104,3 +104,15 @@
 .comment-text {
   margin-top: 4px;
 }
+
+/**댓글 수정*/
+.comment-edit-form {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  textarea {
+    background-color: transparent;
+  }
+}
