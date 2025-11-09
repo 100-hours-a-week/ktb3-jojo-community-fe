@@ -13,20 +13,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   const articleId = searchParam.get("articleId");
   console.log(articleId);
 
-  const { data: articleData } = await fetchWrapper.get({
-    url: SERVER_URL.ARTICLE.DETAIL(articleId),
-    onSuccess: (data) => console.log(data),
-  });
+  const [articleRes, commentsRes] = await Promise.all([
+    fetchWrapper.get({
+      url: SERVER_URL.ARTICLE.DETAIL(articleId),
+      onSuccess: (data) => console.log(data),
+    }),
+    fetchWrapper.get({
+      url: SERVER_URL.COMMENT.LIST_BY_ARTICLE(articleId),
+      onSuccess: (data) => console.log(data),
+    }),
+  ]);
 
-  const { data: commentsData } = await fetchWrapper.get({
-    url: SERVER_URL.COMMENT.LIST_BY_ARTICLE(articleId),
-    onSuccess: (data) => console.log(data),
-  });
-
-  const articleDetailElement = createArticleContainer(articleData);
+  const articleDetailElement = createArticleContainer(articleRes.data);
 
   detail.appendChild(articleDetailElement);
 
-  const { items: commentsDataList } = commentsData;
+  const { items: commentsDataList } = commentsRes.data;
   createArticleCommentsItems(commentsDataList);
 });
