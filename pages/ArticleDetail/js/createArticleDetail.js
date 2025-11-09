@@ -63,17 +63,13 @@ export function createArticleCommentsItems(commentsData) {
     const { author, createdAt, content, commentId, editable } = commentData;
 
     const node = commentItemComponent({
+      commentId,
       avatar: author.profileImageUrl,
       nickname: author.nickname,
       createdAt,
       contents: content,
+      editable,
     });
-
-    // 내 댓글이면 액션 버튼 추가
-    if (editable) {
-      const actionBtnNode = actionsBtnComponent();
-      node.getDom().appendChild(actionBtnNode.getDom());
-    }
 
     commentsContainer.appendChild(node.getDom());
   });
