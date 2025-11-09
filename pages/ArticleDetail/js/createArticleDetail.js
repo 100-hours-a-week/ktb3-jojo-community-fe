@@ -1,4 +1,3 @@
-import { attachDomToRoot } from "../../../shared/lib/domHandler/DomConverter.js";
 import {
   statComponent,
   actionsBtnComponent,
@@ -23,7 +22,6 @@ export function createArticleContainer(articleData) {
 
   const templateTitle = template.querySelector(".detail-title");
   const authorNickname = template.querySelector(".detail-author-nickname");
-  //   const authorAvatar = template.querySelector(".avatar");
   const metaDate = template.querySelector(".detail-header-meta-date");
   const postContent = template.querySelector(".post-content");
 
@@ -46,27 +44,23 @@ export function createArticleContainer(articleData) {
   const statusCategories = Object.keys(status);
 
   statusCategories.forEach((key) => {
-    const node = statComponent();
-    const statNum = node.querySelector(".stat-number");
-    const statLabel = node.querySelector(".stat-label");
-    statNum.textContent = `${status[key]}`;
-    statLabel.textContent = key;
-
-    postStats.appendChild(node);
+    const node = statComponent({ number: status[key], label: key });
+    console.log(node);
+    postStats.appendChild(node.getDom());
   });
 
   /** 내 게시글이면 액션 버튼 넣기 */
   if (!isMyContents) return template;
 
   const actionBtnNode = actionsBtnComponent();
-  attachDomToRoot({ rootId: "actionButtons", fragment: actionBtnNode });
+  actionBtnNode.setAttachDomToRoot("actionButtons");
 
   return template;
 }
 
 /**
  *
- * @param {Array<
+ * @param {Array
  * {commentId: number, content: string, author: {id: number, nickname: string, profileImageUrl: string},
  * editable: Boolean, createdAt: Date}
  * >} commentsData
@@ -76,24 +70,21 @@ export function createArticleCommentsItems(commentsData) {
   const commentsContainer = document.getElementById("articleCommentSection");
 
   commentsData.forEach((commentData) => {
-    const node = commentItemComponent();
-
-    const authorNickname = node.querySelector(".comment-author-nickname");
-    const commentDate = node.querySelector(".comment-date");
-    const commentText = node.querySelector(".comment-text");
-
     const { author, createdAt, content, commentId, editable } = commentData;
 
-    authorNickname.textContent = author.nickname;
-    commentDate.textContent = createdAt;
-    commentText.textContent = content; // 또는 contents
+    const node = commentItemComponent({
+      avatar: author.profileImageUrl,
+      nickname: author.nickname,
+      createdAt,
+      contents: content,
+    });
 
     // 내 댓글이면 액션 버튼 추가
     if (editable) {
       const actionBtnNode = actionsBtnComponent();
-      node.appendChild(actionBtnNode);
+      node.getDom().appendChild(actionBtnNode.getDom());
     }
 
-    commentsContainer.appendChild(node);
+    commentsContainer.appendChild(node.getDom());
   });
 }
