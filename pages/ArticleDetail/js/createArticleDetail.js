@@ -1,3 +1,4 @@
+import { articleDetailContainerComponent } from "../components/articleDetailContainerComponent.js";
 import {
   statComponent,
   actionsBtnComponent,
@@ -14,17 +15,6 @@ import {
  */
 
 export function createArticleContainer(articleData) {
-  const template = document
-    .getElementById("articleContainerTemplate")
-    .content.cloneNode(true);
-
-  const postStats = template.getElementById("postStats");
-
-  const templateTitle = template.querySelector(".detail-title");
-  const authorNickname = template.querySelector(".detail-author-nickname");
-  const metaDate = template.querySelector(".detail-header-meta-date");
-  const postContent = template.querySelector(".post-content");
-
   const {
     articleId,
     title,
@@ -36,26 +26,24 @@ export function createArticleContainer(articleData) {
     isMyContents,
   } = articleData;
 
-  templateTitle.textContent = title;
-  authorNickname.textContent = author.nickname;
-  metaDate.textContent = createdAt;
-  postContent.textContent = contents;
+  const statusHTML = Object.entries(status)
+    .map((val) => {
+      return statComponent({ number: val[1], label: val[0] }).getHtml();
+    })
+    .join("");
 
-  const statusCategories = Object.keys(status);
+  const actionButtonHTML = isMyContents ? actionsBtnComponent().getHtml() : ``;
 
-  statusCategories.forEach((key) => {
-    const node = statComponent({ number: status[key], label: key });
-    console.log(node);
-    postStats.appendChild(node.getDom());
-  });
+  const articleDetailContainer = articleDetailContainerComponent({
+    title,
+    author,
+    createdAt,
+    actionButtonHTML,
+    contents,
+    statusHTML,
+  }).getDom();
 
-  /** 내 게시글이면 액션 버튼 넣기 */
-  if (!isMyContents) return template;
-
-  const actionBtnNode = actionsBtnComponent();
-  actionBtnNode.setAttachDomToRoot("actionButtons");
-
-  return template;
+  return articleDetailContainer;
 }
 
 /**

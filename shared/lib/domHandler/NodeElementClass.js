@@ -15,6 +15,12 @@ class NodeElementClass {
     return this.#dom;
   }
 
+  getHtml() {
+    const wrapper = document.createElement("div");
+    wrapper.appendChild(this.#dom.cloneNode(true));
+    return wrapper.innerHTML;
+  }
+
   setContentsByClassName({ className, contents }) {
     const target = this.#dom.querySelector(`.${className}`);
     target.textContent = contents;

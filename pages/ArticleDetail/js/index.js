@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   const articleDetailElement = createArticleContainer(articleData);
+
   detail.appendChild(articleDetailElement);
 
   const { items: commentsDataList } = commentsData;
