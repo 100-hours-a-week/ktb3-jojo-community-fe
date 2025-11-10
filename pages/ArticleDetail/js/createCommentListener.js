@@ -16,8 +16,6 @@ export const attachCommentFormListener = (articleId) => {
       return;
     }
 
-    console.log(typeof articleId);
-
     const response = await fetchWrapper.post({
       url: SERVER_URL.COMMENT.CREATE(articleId),
       payload: {
@@ -28,7 +26,6 @@ export const attachCommentFormListener = (articleId) => {
       },
       onError: (error) => {
         console.error(error);
-        alert(`댓글 작성 실패: ${error}`);
       },
     });
 

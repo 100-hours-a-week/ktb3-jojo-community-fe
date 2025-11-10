@@ -6,7 +6,8 @@ export const PATHS = {
       `${BASE_PATH}/ArticleDetail/articleDetail.html?articleId=${articleId}`,
   },
   ARTICLE_EDITOR: {
-    ABSOLUTE: `${BASE_PATH}/ArticleEditor/articleEditor.html`,
+    ABSOLUTE: (articleId) =>
+      `${BASE_PATH}/ArticleEditor/articleEditor.html?articleId=${articleId}`,
   },
   ARTICLES_LIST: {
     ABSOLUTE: `${BASE_PATH}/ArticlesList/articlesList.html`,

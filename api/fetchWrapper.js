@@ -63,7 +63,19 @@ const _fetch = () => {
  */
 
 async function handleResponse(response, onSuccess, onError) {
-  const data = await response.json();
+  let data;
+
+  try {
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      data = await response.json();
+    } else {
+      data = null;
+    }
+  } catch (error) {
+    console.log(error);
+    data = null;
+  }
 
   if (response.ok) {
     onSuccess?.(data);
