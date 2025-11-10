@@ -17,8 +17,6 @@ export const commentItemComponent = ({
   contents,
   editable,
 }) => {
-  const actionsBtnHTML = editable ? actionsBtnComponent().getHtml() : "";
-
   const node = NodeElement(`
       <div id="commentId-${commentId}" class="comment-item flex_row_between">
         <div>
@@ -31,40 +29,25 @@ export const commentItemComponent = ({
           </div>
           <div class="comment-text">${contents}</div>
         </div>
-        ${actionsBtnHTML}
+        <div class="action-btn-slot"></div>
       </div>
   `);
 
-  if (editable) {
-    attachCommentActions(node, commentId);
+  if (!editable) return node;
+
+  const actionsBtnNode = actionsBtnComponent({
+    id: commentId,
+    onEdit: (id) => handleEditComment(node.getDom(), id),
+    onDelete: () => handleDeleteComment(node.getDom()),
+  });
+
+  const slot = node.getDom().querySelector(".action-btn-slot");
+  if (slot) {
+    slot.appendChild(actionsBtnNode.getDom());
   }
 
   return node;
 };
-
-/**
- * 댓글 액션 이벤트 등록
- */
-const attachCommentActions = (node, commentId) => {
-  const dom = node.getDom();
-  const commentItem = dom.firstElementChild || dom;
-  const actionButtons = commentItem.querySelector(".action-buttons");
-
-  if (!actionButtons) return;
-
-  const buttons = actionButtons.querySelectorAll("button");
-  const editBtn = buttons[0];
-  const deleteBtn = buttons[1];
-
-  editBtn.addEventListener("click", () => {
-    handleEditComment(commentItem, commentId);
-  });
-
-  deleteBtn.addEventListener("click", () => {
-    handleDeleteComment(commentItem);
-  });
-};
-
 /**
  * 댓글 수정 - 인라인 에디팅
  */
@@ -89,49 +72,46 @@ const handleEditComment = (commentItem, commentId) => {
   `;
 
   const editFormNode = NodeElement(editFormHTML);
-  const editFormElement = editFormNode.getDom().firstElementChild;
+  const editFormElement = editFormNode.getDom();
 
   commentText.style.display = "none";
   commentText.parentNode.insertBefore(editFormElement, commentText);
   actionButtons.style.display = "none";
 
   const textarea = editFormElement.querySelector(".comment-edit-input");
-  const confirmBtn = editFormElement.querySelector(".comment-confirm-btn");
-  const cancelBtn = editFormElement.querySelector(".comment-cancel-btn");
-
   textarea.focus();
 
   // 직접 addEventListener 사용
-  confirmBtn.addEventListener("click", async () => {
-    const newContent = textarea.value.trim();
+  editFormNode
+    .on(".comment-confirm-btn", "click", async () => {
+      const newContent = textarea.value.trim();
 
-    if (!newContent) {
-      return alert("댓글 내용을 입력해주세요.");
-    }
+      if (!newContent) {
+        return alert("댓글 내용을 입력해주세요.");
+      }
 
-    if (newContent === currentText) {
+      if (newContent === currentText) {
+        cancelEditComment(editFormElement, commentText, actionButtons);
+        return;
+      }
+
+      const response = await fetchWrapper.put({
+        url: SERVER_URL.COMMENT.UPDATE(commentId),
+        payload: { content: newContent },
+        onSuccess: (data) => console.log(data),
+        onError: (error) => {
+          console.error(error);
+        },
+      });
+
+      if (response.data || response.message) {
+        commentText.textContent = newContent;
+        cancelEditComment(editFormElement, commentText, actionButtons);
+      }
+    })
+    .on(".comment-cancel-btn", "click", () => {
       cancelEditComment(editFormElement, commentText, actionButtons);
-      return;
-    }
-
-    const response = await fetchWrapper.put({
-      url: SERVER_URL.COMMENT.UPDATE(commentId),
-      payload: { content: newContent },
-      onSuccess: (data) => console.log(data),
-      onError: (error) => {
-        console.error(error);
-      },
     });
-
-    if (response.data || response.message) {
-      commentText.textContent = newContent;
-      cancelEditComment(editFormElement, commentText, actionButtons);
-    }
-  });
-
-  cancelBtn.addEventListener("click", () => {
-    cancelEditComment(editFormElement, commentText, actionButtons);
-  });
 };
 
 /**

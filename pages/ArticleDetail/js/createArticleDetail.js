@@ -1,10 +1,6 @@
 import { articleDetailContainerComponent } from "../components/articleDetailContainerComponent.js";
 import { attachCommentFormListener } from "./createCommentListener.js";
-import {
-  statComponent,
-  actionsBtnComponent,
-  commentItemComponent,
-} from "../components/index.js";
+import { statComponent, commentItemComponent } from "../components/index.js";
 
 /**
  *
@@ -17,6 +13,7 @@ import {
 
 export function createArticleContainer(articleData) {
   const {
+    articleId,
     title,
     contents,
     author,
@@ -33,16 +30,15 @@ export function createArticleContainer(articleData) {
     })
     .join("");
 
-  const actionButtonHTML = isMyContents ? actionsBtnComponent().getHtml() : ``;
-
   const articleDetailContainer = articleDetailContainerComponent({
     title,
     author,
     createdAt,
-    actionButtonHTML,
     imageUrls,
     contents,
     statusHTML,
+    articleId,
+    isMyContents,
   }).getDom();
 
   return articleDetailContainer;
