@@ -19,15 +19,12 @@ export const articleDetailContainerComponent = ({
   isMyContents,
 }) => {
   const { profileImageUrl, nickname } = author;
-  const imageUrlsHTML = imageUrls.reduce((acc, curValue) => {
-    return acc + `<img src=${curValue}/>`;
-  }, "");
 
   /**
    * 게시글 수정
    */
   const handleEditArticle = (articleId) => {
-    window.location.href = PATHS.ARTICLE_EDITOR.ABSOLUTE(articleId);
+    window.location.href = PATHS.ARTICLE_EDITOR.PUT(articleId);
   };
 
   /**
@@ -53,7 +50,7 @@ export const articleDetailContainerComponent = ({
           <div class="action-btn-slot"></div>
         </div>
       </div>
-      <div class="post-images flex_col_gap1">${imageUrlsHTML}</div>
+      <div class="post-images flex_col_gap1"></div>
       <div class="post-content">${contents}</div>
 
       <div id="post-stats" class="post-stats"></div>
@@ -69,6 +66,15 @@ export const articleDetailContainerComponent = ({
       <div id="articleCommentSection" class="comment-section"></div>
     </div>
   `);
+
+  //createContextualFragment 방식으로 하면 이미지 깨짐 (유니코드 문제 때문에)
+  const imgSlot = node.getDom().querySelector(".post-images");
+
+  imageUrls.forEach((url) => {
+    const img = document.createElement("img");
+    img.src = url;
+    imgSlot.appendChild(img);
+  });
 
   statusDoms.forEach((element) => {
     node.attachDomToSlot(".post-stats", element);

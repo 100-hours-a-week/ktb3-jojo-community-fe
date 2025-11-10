@@ -24,5 +24,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 btnCreateArticle.addEventListener("click", () => {
-  window.location.href = PATHS.ARTICLE_EDITOR.ABSOLUTE();
+  window.location.href = PATHS.ARTICLE_EDITOR.ABSOLUTE;
 });

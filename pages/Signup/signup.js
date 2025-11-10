@@ -8,6 +8,7 @@ import {
   invalidatePassword,
   invalidatePasswordConfirm,
   invalidateEmail,
+  invalidateProfileImg,
 } from "../../shared/lib/utils/invalidateInput.js";
 import {
   openModal,
@@ -17,16 +18,21 @@ import { fetchWrapper } from "../../api/fetchWrapper.js";
 import { PATHS } from "../../shared/constants/paths.js";
 import { INPUT_HELPER_TEXT } from "../../shared/constants/error.js";
 import { goBack } from "../../shared/lib/domHandler/goBackHandle.js";
+import { fileToDataUrl } from "../../shared/lib/utils/fileToDataUrl.js";
 
 const form = document.getElementById("signupForm");
 const modal = document.getElementById("signupConfirm");
 const btnCancel = modal.querySelector(".modal-btn-cancel");
 const btnOpenModal = document.getElementById("signupBtn");
+const imageInput = document.getElementById("fileInput");
+const photoBox = document.getElementById("photoBox");
 
 const emailInput = form.querySelector('input[name="email"]');
 const pwInput = form.querySelector('input[name="password"]');
 const pw2Input = form.querySelector('input[name="passwordConfirm"]');
 const nickInput = form.querySelector('input[name="nickname"]');
+
+let imageUrl;
 
 document.addEventListener("DOMContentLoaded", () => {
   // 입력 필드 배열
@@ -46,7 +52,7 @@ form.addEventListener("submit", async (e) => {
     email: emailInput.value.trim(),
     password: pwInput.value.trim(),
     nickname: nickInput.value.trim(),
-    profileImageUrl: "http://",
+    profileImageUrl: imageUrl,
   };
 
   // console.log(payload);
@@ -65,6 +71,19 @@ form.addEventListener("submit", async (e) => {
       closeModal("signupConfirm");
     },
   });
+});
+
+/**이미지 */
+
+photoBox.addEventListener("click", () => {
+  imageInput.click();
+});
+
+imageInput.addEventListener("change", async () => {
+  const file = imageInput.files;
+  imageUrl = await fileToDataUrl(file[0]);
+  photoBox.style.backgroundImage = `url(${imageUrl})`;
+  photoBox.querySelector(".plus-icon").style.display = "none";
 });
 
 // input validate
@@ -91,6 +110,11 @@ btnOpenModal.addEventListener("click", (e) => {
   invalidateNickname(nickInput.value, () => {
     showError(nickInput, INPUT_HELPER_TEXT.ENTER_NICKNAME);
     valid = false;
+  });
+
+  invalidateProfileImg(imageUrl, () => {
+    console.log(imageUrl);
+    showError(imageInput, INPUT_HELPER_TEXT.ENTER_PROFILE_IMAGE);
   });
 
   if (!valid) return;

@@ -28,8 +28,17 @@
             <div class="form-title">회원가입</div>
 
             <form id="signupForm">
-              <div class="profile-photo">
-                <span class="plus-icon">+</span>
+              <div class="form-group">
+                <div class="profile-photo" id="photoBox">
+                  <span class="plus-icon">+</span>
+                </div>
+                <input
+                  type="file"
+                  id="fileInput"
+                  accept="image/*"
+                  style="display: none"
+                />
+                <div class="helper-text"></div>
               </div>
               <div class="form-group">
                 <label for="email">이메일*</label>

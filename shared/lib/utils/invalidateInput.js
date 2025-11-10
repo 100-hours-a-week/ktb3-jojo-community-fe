@@ -31,3 +31,8 @@ export const invalidateNickname = (nickInput, errorCallback) => {
   if (nickInput.trim()) return;
   errorCallback();
 };
+
+export const invalidateProfileImg = (imgUrl, errorCallback) => {
+  if (imgUrl) return;
+  errorCallback();
+};
