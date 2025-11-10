@@ -73,7 +73,7 @@ async function handleResponse(response, onSuccess, onError) {
       data = null;
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     data = null;
   }
 

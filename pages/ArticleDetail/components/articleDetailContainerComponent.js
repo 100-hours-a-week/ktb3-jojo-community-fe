@@ -14,7 +14,7 @@ export const articleDetailContainerComponent = ({
   createdAt,
   imageUrls,
   contents,
-  statusHTML,
+  statusDoms, //NodeElementClass
   articleId,
   isMyContents,
 }) => {
@@ -38,14 +38,6 @@ export const articleDetailContainerComponent = ({
     setupDeleteModal(articleId);
   };
 
-  const actionButtonHTML = isMyContents
-    ? actionsBtnComponent({
-        id: articleId,
-        onEdit: handleEditArticle,
-        onDelete: handleDeleteArticle,
-      }).getHtml()
-    : "";
-
   const node = NodeElement(`
     <div class="container-item">
       <div class="detail-header">
@@ -58,15 +50,13 @@ export const articleDetailContainerComponent = ({
             </div>
             <div class="detail-header-meta-date">${createdAt}</div>
           </div>
-          ${actionButtonHTML}
+          <div class="action-btn-slot"></div>
         </div>
       </div>
       <div class="post-images flex_col_gap1">${imageUrlsHTML}</div>
       <div class="post-content">${contents}</div>
 
-      <div class="post-stats">
-      ${statusHTML}
-      </div>
+      <div id="post-stats" class="post-stats"></div>
 
       <!-- 댓글 작성 form -->
       <form class="comment-form">
@@ -79,6 +69,21 @@ export const articleDetailContainerComponent = ({
       <div id="articleCommentSection" class="comment-section"></div>
     </div>
   `);
+
+  statusDoms.forEach((element) => {
+    node.attachDomToSlot(".post-stats", element);
+  });
+
+  if (!isMyContents) return node;
+
+  const actionsBtnNode = actionsBtnComponent({
+    id: articleId,
+    onEdit: handleEditArticle,
+    onDelete: handleDeleteArticle,
+  });
+
+  node.attachDomToSlot(".action-btn-slot", actionsBtnNode);
+
   return node;
 };
 

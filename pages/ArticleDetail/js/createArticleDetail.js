@@ -20,15 +20,12 @@ export function createArticleContainer(articleData) {
     status,
     createdAt,
     imageUrls,
-    likedByMe,
     isMyContents,
   } = articleData;
 
-  const statusHTML = Object.entries(status)
-    .map((val) => {
-      return statComponent({ number: val[1], label: val[0] }).getHtml();
-    })
-    .join("");
+  const statusDoms = Object.entries(status).map((val) => {
+    return statComponent({ number: val[1], label: val[0] });
+  });
 
   const articleDetailContainer = articleDetailContainerComponent({
     title,
@@ -36,7 +33,7 @@ export function createArticleContainer(articleData) {
     createdAt,
     imageUrls,
     contents,
-    statusHTML,
+    statusDoms,
     articleId,
     isMyContents,
   }).getDom();

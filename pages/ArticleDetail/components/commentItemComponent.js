@@ -41,10 +41,7 @@ export const commentItemComponent = ({
     onDelete: () => handleDeleteComment(node.getDom()),
   });
 
-  const slot = node.getDom().querySelector(".action-btn-slot");
-  if (slot) {
-    slot.appendChild(actionsBtnNode.getDom());
-  }
+  node.attachDomToSlot(".action-btn-slot", actionsBtnNode);
 
   return node;
 };

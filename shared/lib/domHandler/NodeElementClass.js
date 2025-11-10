@@ -71,6 +71,19 @@ class NodeElementClass {
   }
 
   /**
+   *
+   * @param {string} selector
+   * @param {NodeElementClass} element
+   */
+
+  attachDomToSlot(selector, element) {
+    const regex = /^\./;
+    const slotSelector = selector.match(regex) ? selector : `.${selector}`;
+    const slot = this.#dom.querySelector(slotSelector);
+    slot?.appendChild(element.getDom());
+  }
+
+  /**
    * 이벤트 재바인딩, 리렌더링 후 필수적
    */
   rebindEventListener() {
