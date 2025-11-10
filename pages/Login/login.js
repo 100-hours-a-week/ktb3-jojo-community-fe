@@ -3,6 +3,7 @@ import { fetchWrapper } from "../../api/fetchWrapper.js";
 import { INPUT_HELPER_TEXT } from "../../shared/constants/error.js";
 import { PATHS } from "../../shared/constants/paths.js";
 import { showError } from "../../shared/lib/domHandler/errorHandle.js";
+import { Header } from "../../shared/components/Header.js";
 import {
   invalidateEmail,
   invalidatePassword,
@@ -28,6 +29,14 @@ function validation() {
 
   return valid;
 }
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const header = await Header({
+    showProfileImg: false,
+  });
+
+  header.setAttachDomToRoot("header");
+});
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();

@@ -8,6 +8,7 @@ import {
 } from "../../shared/lib/domHandler/errorHandle.js";
 import { fileToDataUrl } from "../../shared/lib/utils/fileToDataUrl.js";
 import { getSearchParam } from "../../shared/lib/utils/getSearchParam.js";
+import { Header } from "../../shared/components/Header.js";
 
 const searchParam = getSearchParam();
 
@@ -21,6 +22,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const articleId = searchParam.get("articleId");
   const isEditMode = articleId ? true : false; //수정 모드 -> fetcb
   let imageUrls = [];
+
+  const header = await Header({
+    backBtnCallback: () => {
+      window.location.href = PATHS.ARTICLES_LIST.ABSOLUTE;
+    },
+    showProfileImg: false,
+  });
+  header.setAttachDomToRoot("header");
 
   if (isEditMode) {
     submitBtn.textContent = "수정 완료";

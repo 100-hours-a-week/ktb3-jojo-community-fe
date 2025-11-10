@@ -21,7 +21,7 @@ export const ListItemComponent = ({
         </div>
       </div>
       <div id="author-${authorId}" class="list-item-footer">
-        <img class="list-item-avatar" src=${profileImageUrl}/>
+        <img class="list-item-avatar" src=${profileImageUrl}></img>
         <div class="list-item-user">${nickname}</div>
       </div>
     </div>

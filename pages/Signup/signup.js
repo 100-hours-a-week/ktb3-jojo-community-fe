@@ -19,6 +19,7 @@ import { PATHS } from "../../shared/constants/paths.js";
 import { INPUT_HELPER_TEXT } from "../../shared/constants/error.js";
 import { goBack } from "../../shared/lib/domHandler/goBackHandle.js";
 import { fileToDataUrl } from "../../shared/lib/utils/fileToDataUrl.js";
+import { Header } from "../../shared/components/Header.js";
 
 const form = document.getElementById("signupForm");
 const modal = document.getElementById("signupConfirm");
@@ -34,9 +35,17 @@ const nickInput = form.querySelector('input[name="nickname"]');
 
 let imageUrl;
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  const header = await Header({
+    backBtnCallback: () => {
+      window.location.href = PATHS.LOGIN.ABSOLUTE;
+    },
+    showProfileImg: false,
+  });
+
+  header.setAttachDomToRoot("header");
+
   // 입력 필드 배열
-  console.log("loaded");
   const inputs = [emailInput, pwInput, pw2Input, nickInput];
 
   // 입력 시 에러 제거
