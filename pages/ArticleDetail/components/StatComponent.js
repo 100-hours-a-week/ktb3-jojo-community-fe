@@ -10,17 +10,34 @@ export const statComponent = ({ number, label, likedByMe, articleId }) => {
             </div>
     </div>`);
 
+  let currentLiked = likedByMe;
+  let currentCount = number;
+
+  //TODO: diff 알고리즘
+  const updateView = () => {
+    node.rerender(`
+    <div>
+      <div class="stat stat-${label} ${currentLiked ? "liked" : ""}">
+        <div class="stat-number">${currentCount}</div>
+        <div class="stat-label">${label}</div>
+      </div>
+    </div>
+  `);
+  };
+
   if (likedByMe && label == "likes") {
     node.addClassName("stat", "liked");
   }
 
   if (label == "likes") {
     node.on("stat-likes", "click", async () => {
-      if (likedByMe) {
+      if (currentLiked) {
         await fetchWrapper._delete({
           url: SERVER_URL.LIKE.UNLIKE(articleId),
           onSuccess: () => {
-            window.location.reload();
+            currentLiked = !currentLiked;
+            currentCount--;
+            updateView();
           },
         });
 
@@ -30,7 +47,9 @@ export const statComponent = ({ number, label, likedByMe, articleId }) => {
       await fetchWrapper.post({
         url: SERVER_URL.LIKE.LIKE(articleId),
         onSuccess: () => {
-          window.location.reload();
+          currentLiked = !currentLiked;
+          currentCount++;
+          updateView();
         },
       });
     });

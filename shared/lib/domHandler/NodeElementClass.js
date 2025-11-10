@@ -105,8 +105,11 @@ class NodeElementClass {
    */
   rebindEventListener() {
     this.#eventListeners.forEach((listener) => {
-      const [selector, eventType, handler] = listener;
-      const element = this.#dom.querySelector(selector);
+      const { selector, eventType, handler } = listener;
+      const regex = /^\./;
+      const targetSelector = selector.match(regex) ? selector : `.${selector}`;
+      const element = this.#dom.querySelector(targetSelector);
+      // console.log(element, targetSelector, this.#dom);
       element.addEventListener(eventType, handler);
     });
   }
