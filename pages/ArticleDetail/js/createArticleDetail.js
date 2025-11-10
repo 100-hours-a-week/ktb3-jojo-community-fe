@@ -21,10 +21,16 @@ export function createArticleContainer(articleData) {
     createdAt,
     imageUrls,
     isMyContents,
+    likedByMe,
   } = articleData;
 
   const statusDoms = Object.entries(status).map((val) => {
-    return statComponent({ number: val[1], label: val[0] });
+    return statComponent({
+      number: val[1],
+      label: val[0],
+      likedByMe,
+      articleId,
+    });
   });
 
   const articleDetailContainer = articleDetailContainerComponent({

@@ -20,7 +20,10 @@ class NodeElementClass {
    * @returns
    */
   on(selector, eventType, handler) {
-    const element = this.#dom.querySelector(selector);
+    const regex = /^\./;
+    const targetSelector = selector.match(regex) ? selector : `.${selector}`;
+    const element = this.#dom.querySelector(targetSelector);
+    console.log(element);
 
     element?.addEventListener(eventType, handler);
     this.#eventListeners.push({
@@ -58,14 +61,30 @@ class NodeElementClass {
     return wrapper.innerHTML;
   }
 
-  setContentsByClassName({ className, contents }) {
-    const target = this.#dom.querySelector(`.${className}`);
-    target.textContent = contents;
+  setContentsBySelector(selector, contents) {
+    const regex = /^\./;
+    const targetSelector = selector.match(regex) ? selector : `.${selector}`;
+    const element = this.#dom.querySelector(targetSelector);
+    element.textContent = contents;
   }
 
   setAttachDomToRoot(rootId) {
     const root = document.getElementById(rootId);
     root.appendChild(this.#dom);
+  }
+
+  addClassName(selector, className) {
+    const regex = /^\./;
+    const targetSelector = selector.match(regex) ? selector : `.${selector}`;
+    const element = this.#dom.querySelector(targetSelector);
+    element.classList.add(className);
+  }
+
+  removeClassName(selector, className) {
+    const regex = /^\./;
+    const targetSelector = selector.match(regex) ? selector : `.${selector}`;
+    const element = this.#dom.querySelector(targetSelector);
+    element.classList.remove(className);
   }
 
   /**
