@@ -1,7 +1,7 @@
 function createDom(context) {
   const range = document.createRange();
   const fragment = range.createContextualFragment(context);
-  return fragment;
+  return fragment.firstElementChild;
 }
 
 class NodeElementClass {
@@ -13,7 +13,11 @@ class NodeElementClass {
   }
 
   /**
-   * 선택자로 요소를 찾아 이벤트 리스너 등록
+   * @description 이벤트 리스너 등록
+   * @param {string} selector
+   * @param {"click"|"submit"|"scroll"} eventType //TODO: 더 세분화
+   * @param {(element) => {}} handler
+   * @returns
    */
   on(selector, eventType, handler) {
     const element = this.#dom.querySelector(selector);
@@ -21,7 +25,7 @@ class NodeElementClass {
     if (element) {
       element.addEventListener(eventType, handler);
       this.#eventListeners.push({
-        element,
+        selector,
         eventType,
         handler,
       });
@@ -30,21 +34,21 @@ class NodeElementClass {
     return this;
   }
 
-  /**
-   * 직접 dom에 이벤트 리스너 등록
-   */
-  onElement(element, eventType, handler) {
-    if (element) {
-      element.addEventListener(eventType, handler);
-      this.#eventListeners.push({
-        element,
-        eventType,
-        handler,
-      });
-    }
+  // /**
+  //  * 직접 dom에 이벤트 리스너 등록
+  //  */
+  // onElement(element, eventType, handler, selector) {
+  //   if (element) {
+  //     element.querySelector(selector).addEventListener(eventType, handler);
+  //     this.#eventListeners.push({
+  //       element,
+  //       eventType,
+  //       handler,
+  //     });
+  //   }
 
-    return this;
-  }
+  //   return this;
+  // }
 
   getDom() {
     return this.#dom;
@@ -62,6 +66,31 @@ class NodeElementClass {
   }
 
   setAttachDomToRoot(rootId) {
+    const root = document.getElementById(rootId);
+    root.appendChild(this.#dom);
+  }
+
+  /**
+   * 이벤트 재바인딩, 리렌더링 후 필수적
+   */
+  rebindEventListener() {
+    this.#eventListeners.forEach((listener) => {
+      const [selector, eventType, handler] = listener;
+      const element = this.#dom.querySelector(selector);
+      element.addEventListener(eventType, handler);
+    });
+  }
+
+  rerender(context) {
+    const newDom = createDom(context);
+    if (this.#dom.parentNode) {
+      this.#dom.parentNode.replaceChild(newDom, this.#dom);
+    }
+    this.#dom = newDom;
+    this.rebindEventListener();
+  }
+
+  mount(rootId) {
     const root = document.getElementById(rootId);
     root.appendChild(this.#dom);
   }
