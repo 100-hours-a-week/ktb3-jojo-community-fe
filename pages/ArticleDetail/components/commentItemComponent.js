@@ -92,18 +92,22 @@ const handleEditComment = (commentItem, commentId) => {
         return;
       }
 
-      const response = await fetchWrapper.put({
-        url: SERVER_URL.COMMENT.UPDATE(commentId),
-        payload: { content: newContent },
-        onSuccess: (data) => console.log(data),
-        onError: (error) => {
-          console.error(error);
-        },
-      });
+      try {
+        const response = await fetchWrapper.put({
+          url: SERVER_URL.COMMENT.UPDATE(commentId),
+          payload: { content: newContent },
+          onSuccess: (data) => console.log(data),
+          onError: (error) => {
+            console.error(error);
+          },
+        });
 
-      if (response.data || response.message) {
-        commentText.textContent = newContent;
-        cancelEditComment(editFormElement, commentText, actionButtons);
+        if (response.data || response.message) {
+          commentText.textContent = newContent;
+          cancelEditComment(editFormElement, commentText, actionButtons);
+        }
+      } catch (e) {
+        // alert(e);
       }
     })
     .on(".comment-cancel-btn", "click", () => {

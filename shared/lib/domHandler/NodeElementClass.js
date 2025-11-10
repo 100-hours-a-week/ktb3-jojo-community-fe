@@ -22,14 +22,12 @@ class NodeElementClass {
   on(selector, eventType, handler) {
     const element = this.#dom.querySelector(selector);
 
-    if (element) {
-      element.addEventListener(eventType, handler);
-      this.#eventListeners.push({
-        selector,
-        eventType,
-        handler,
-      });
-    }
+    element?.addEventListener(eventType, handler);
+    this.#eventListeners.push({
+      selector,
+      eventType,
+      handler,
+    });
 
     return this;
   }

@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const inputs = [contentInput];
   const articleId = searchParam.get("articleId");
   const isEditMode = articleId ? true : false; //수정 모드 -> fetcb
+  let imageUrls = [];
 
   if (isEditMode) {
     submitBtn.textContent = "수정 완료";
@@ -40,8 +41,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     imageUrls = articleData?.imageUrls || [];
   }
 
-  let imageUrls = [];
-
   inputs.forEach((input) => {
     input.addEventListener("input", () => clearError(input));
   });
@@ -53,8 +52,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     // console.log(imageUrls);
   });
 
+  /**
+   * @description form 동작
+   */
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    e.stopPropagation();
 
     if (!titleInput.value.trim() || !contentInput.value) {
       showError(contentInput, INPUT_HELPER_TEXT.ENTER_TITLE_CONTENT);
@@ -66,6 +70,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       content: contentInput.value,
       imageUrls,
     };
+
+    console.log(payload, isEditMode);
 
     if (isEditMode) {
       const response = await fetchWrapper.put({
