@@ -95,6 +95,13 @@ textarea {
   margin-bottom: 20px;
 }
 
+.form-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 1rem;
+}
+
 .form-group label {
   display: block;
   font-weight: 500;
