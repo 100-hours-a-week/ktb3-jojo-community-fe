@@ -12,14 +12,14 @@ export const Dropdown = () => {
               </div>`
   );
 
-  node.on("edit-profile", "click", () => {
+  node.on(".edit-profile", "click", () => {
     window.location.href = PATHS.USER_EDIT.NICKNAME;
   });
-  node.on("edit-password", "click", () => {
+  node.on(".edit-password", "click", () => {
     window.location.href = PATHS.USER_EDIT.PASSWORD;
   });
 
-  node.on("logout", "click", async () => {
+  node.on(".logout", "click", async () => {
     await fetchWrapper.post({
       url: SERVER_URL.USER.LOGOUT,
       onSuccess: () => {

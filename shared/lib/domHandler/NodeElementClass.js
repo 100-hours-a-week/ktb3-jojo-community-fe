@@ -20,12 +20,15 @@ class NodeElementClass {
    * @returns
    */
   on(selector, eventType, handler) {
-    const regex = /^\./;
-    const targetSelector = selector.match(regex) ? selector : `.${selector}`;
-    const element = this.#dom.querySelector(targetSelector);
-    console.log(element);
+    const element = this.#dom.querySelector(selector);
 
-    element?.addEventListener(eventType, handler);
+    if (!element) {
+      console.warn(`${selector} 요소를 찾을 수 없습니다.`);
+      return this;
+    }
+
+    element.addEventListener(eventType, handler);
+
     this.#eventListeners.push({
       selector,
       eventType,

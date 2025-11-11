@@ -30,7 +30,7 @@ export const statComponent = ({ number, label, likedByMe, articleId }) => {
   }
 
   if (label == "likes") {
-    node.on("stat-likes", "click", async () => {
+    node.on(".stat-likes", "click", async () => {
       if (currentLiked) {
         await fetchWrapper._delete({
           url: SERVER_URL.LIKE.UNLIKE(articleId),
