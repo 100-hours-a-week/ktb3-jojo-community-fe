@@ -71,10 +71,8 @@
 }
 
 .password-form {
-  border: 2px solid #ff4444;
   border-radius: 8px;
   padding: 20px;
-  background-color: white;
 }
 
 .password-field {
