@@ -1,6 +1,7 @@
 import { SERVER_URL } from "../../../api/constants/endpoint.js";
 import { fetchWrapper } from "../../../api/fetchWrapper.js";
 import { INPUT_HELPER_TEXT } from "../../../shared/constants/error.js";
+import { openModal } from "../../../shared/lib/domHandler/commonHandle.js";
 import {
   clearError,
   showError,
@@ -60,7 +61,7 @@ export const NicknameEditorComponent = ({
         </div>
 
         <button type="submit" class="btn btn-primary">수정하기</button>
-        <button type="button" class="btn btn-secondary">회원탈퇴</button>
+        <button type="button" class="btn btn-secondary" id="signOutBtn">회원탈퇴</button>
       </form>
     </div>
   `);
@@ -121,6 +122,10 @@ export const NicknameEditorComponent = ({
         showError(nicknameInput, err.message);
       },
     });
+  });
+
+  node.on("#signOutBtn", "click", () => {
+    openModal("profileWithdraw");
   });
 
   return node;
