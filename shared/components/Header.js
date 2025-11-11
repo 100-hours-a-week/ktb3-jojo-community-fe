@@ -1,6 +1,14 @@
 import { NodeElement } from "../lib/domHandler/NodeElementClass.js";
 import { fetchWrapper } from "../../api/fetchWrapper.js";
 import { SERVER_URL } from "../../api/constants/endpoint.js";
+import { RESPONSE_ERROR_MESSAGE, UNAUTHORIZED } from "../constants/error.js";
+import { PATHS } from "../constants/paths.js";
+
+/**
+ *
+ * @param {*} param0
+ * @returns
+ */
 
 export const Header = async ({
   backBtnCallback,
@@ -29,7 +37,15 @@ export const Header = async ({
   }
 
   if (showProfileImg) {
-    const { data } = await fetchWrapper.get({ url: SERVER_URL.USER.CURRENT });
+    const { data } = await fetchWrapper.get({
+      url: SERVER_URL.USER.CURRENT,
+      onError: (error) => {
+        if (error == UNAUTHORIZED) {
+          alert(RESPONSE_ERROR_MESSAGE.UNAUTHORIZED);
+          window.location.href = PATHS.LOGIN.ABSOLUTE;
+        }
+      },
+    });
     const avatarEl = node.getDom().querySelector(".avatar");
     avatarEl.src = data.profileImageUrl;
   }

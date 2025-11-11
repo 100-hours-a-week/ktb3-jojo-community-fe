@@ -8,4 +8,11 @@ const INPUT_HELPER_TEXT_FUNCTION = () => ({
   ENTER_TITLE_CONTENT: "제목과 내용을 입력해주세요.",
 });
 
+export const UNAUTHORIZED = "unauthorized";
+
+const RESPONSE_ERROR_MESSAGE_FUNCTION = () => ({
+  UNAUTHORIZED: "로그인해주세요.",
+});
+
 export const INPUT_HELPER_TEXT = INPUT_HELPER_TEXT_FUNCTION();
+export const RESPONSE_ERROR_MESSAGE = RESPONSE_ERROR_MESSAGE_FUNCTION();
