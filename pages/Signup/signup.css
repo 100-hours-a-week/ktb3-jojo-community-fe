@@ -20,6 +20,7 @@
   justify-content: center;
   border: 2px solid #ccc;
   cursor: pointer;
+  object-fit: contain;
 }
 
 .profile-photo:hover {

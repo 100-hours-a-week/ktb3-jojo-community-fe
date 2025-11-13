@@ -13,3 +13,25 @@
 .write-form textarea::placeholder {
   color: #999;
 }
+
+.image-preview-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.preview-image-wrapper {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.preview-image {
+  width: 10rem;
+  height: 10rem;
+  object-fit: cover;
+}
+
+.delete-image-preview-btn {
+  background-color: #999;
+  width: fit-content;
+}

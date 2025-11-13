@@ -25,10 +25,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const isEditMode = articleId ? true : false; //수정 모드 -> fetcb
   const proxyState = { images: [] };
 
-  function deleteImage(imageUrl) {
-    observed.images = observed.images.filter((data) => data != imageUrl);
-  }
-
   //이미지 추가 / 삭제 구현
   const observed = new Proxy(proxyState, {
     set(target, prop, value) {
@@ -139,11 +135,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     imagePreviewListSlot.replaceChildren();
 
     const imagePreviewList = images.map((imageUrl) => {
-      const node = ImagePreviewComponent({ imageUrl, deleteImage });
-
-      node.on(".delete-image-preview-btn", "click", () => {
-        deleteImage(imageUrl);
-      });
+      const node = ImagePreviewComponent({ imageUrl, observed });
       return node;
     });
 
