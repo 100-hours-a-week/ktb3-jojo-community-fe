@@ -9,19 +9,38 @@ import {
 import { fileToDataUrl } from "../../shared/lib/utils/fileToDataUrl.js";
 import { getSearchParam } from "../../shared/lib/utils/getSearchParam.js";
 import { Header } from "../../shared/components/Header.js";
+import { ImagePreviewComponent } from "./components/ImagePreviewComponent.js";
 
 const searchParam = getSearchParam();
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const imageInput = document.getElementById("articleImage");
   const form = document.getElementById("articleForm");
   const titleInput = form.querySelector('input[name="title"]');
+  const imageInput = document.getElementById("articleImage");
   const contentInput = form.querySelector('textarea[name="content"]');
   const submitBtn = form.querySelector('button[type="submit"]');
+
   const inputs = [contentInput];
   const articleId = searchParam.get("articleId");
   const isEditMode = articleId ? true : false; //수정 모드 -> fetcb
-  let imageUrls = [];
+  const proxyState = { images: [] };
+
+  function deleteImage(imageUrl) {
+    observed.images = observed.images.filter((data) => data != imageUrl);
+  }
+
+  //이미지 추가 / 삭제 구현
+  const observed = new Proxy(proxyState, {
+    set(target, prop, value) {
+      if (prop === "images") {
+        console.log(prop, value, target);
+        renderImage(value);
+
+        target[prop] = value;
+        return true;
+      }
+    },
+  });
 
   const header = await Header({
     backBtnCallback: () => {
@@ -47,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 폼에 기존 데이터 채우기
     titleInput.value = articleData?.title;
     contentInput.value = articleData?.contents;
-    imageUrls = articleData?.imageUrls || [];
+    observed.images = articleData?.imageUrls || [];
   }
 
   inputs.forEach((input) => {
@@ -57,8 +76,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 파일 선택 시마다 data URL로 변환
   imageInput.addEventListener("change", async () => {
     const files = Array.from(imageInput.files);
-    imageUrls = await Promise.all(files.map(fileToDataUrl));
-    // console.log(imageUrls);
+    observed.images = [
+      ...observed.images,
+      ...(await Promise.all(files.map(fileToDataUrl))),
+    ];
+    imageInput.value = "";
   });
 
   /**
@@ -77,10 +99,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const payload = {
       title: titleInput.value.trim(),
       content: contentInput.value,
-      imageUrls,
+      imageUrls: proxyState.images,
     };
-
-    console.log(payload, isEditMode);
 
     if (isEditMode) {
       const response = await fetchWrapper.put({
@@ -113,4 +133,22 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
   });
+
+  function renderImage(images) {
+    const imagePreviewListSlot = document.getElementById("imagePreviewList");
+    imagePreviewListSlot.replaceChildren();
+
+    const imagePreviewList = images.map((imageUrl) => {
+      const node = ImagePreviewComponent({ imageUrl, deleteImage });
+
+      node.on(".delete-image-preview-btn", "click", () => {
+        deleteImage(imageUrl);
+      });
+      return node;
+    });
+
+    imagePreviewList.forEach((preview) => {
+      imagePreviewListSlot.appendChild(preview.getDom());
+    });
+  }
 });
