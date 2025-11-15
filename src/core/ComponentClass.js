@@ -11,7 +11,7 @@ export class ComponentClass {
 
   //vNode만 생성
   render() {
-    const html = this.componentFunction();
+    const html = this.componentFunction(this.props);
     const newVNode = htmlToVNode(html);
     console.log(newVNode);
     if (!newVNode) {

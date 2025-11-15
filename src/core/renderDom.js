@@ -7,7 +7,6 @@ function htmlToFragment(html) {
 
 //DOM → vNode
 function domToVNode(dom) {
-  console.log(dom);
   const props = {};
   const children = [];
 
