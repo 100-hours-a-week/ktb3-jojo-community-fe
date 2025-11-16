@@ -6,6 +6,7 @@ function htmlToFragment(html) {
 }
 
 //DOM → vNode
+//{type: tag 이름, props: {tag의 attributes}, children: Array}
 function domToVNode(dom) {
   const props = {};
   const children = [];

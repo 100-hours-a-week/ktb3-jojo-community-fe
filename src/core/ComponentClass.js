@@ -1,3 +1,4 @@
+import { diff } from "./diff.js";
 import { eventDelegator } from "./eventDelegator.js";
 import { htmlToVNode, renderDom } from "./renderDom.js";
 
@@ -21,7 +22,6 @@ export class ComponentClass {
     this.hookOptions.currentStateKey = 0;
     const html = this.componentFunction(this.props);
     const newVNode = htmlToVNode(html);
-    console.log(newVNode);
     if (!newVNode) {
       throw new Error(newVNode);
     }
@@ -55,18 +55,37 @@ export class ComponentClass {
     console.log(this);
   }
 
+  unmount() {
+    this.isMounted = false;
+    this.vNode = null;
+    this.root = null;
+
+    this.delegate = eventDelegator(this.dom);
+    this.hookOptions = {
+      currentStateKey: 0,
+      states: [],
+    };
+  }
+
   update() {
     if (!this.isMounted) {
       this.mount();
       return;
     }
+    const newVNode = this.render();
 
-    const newVNode = this.render(); //render 단계
-    //TODO: diff 구현 및 patch queue 반영
-    //const patchQueue = diff(this.vNode, newVNode); //diff 로 patch queue 를 생성
-    //한번에 patch Queue 반영 (commit)
+    if (newVNode?.type !== this.vNode?.type) {
+      this.unmount();
+      this.mount();
+      return;
+    }
 
-    this.vNode = newVNode; // 최신 스냅샷 저장
+    const patch = diff(this.vNode, newVNode);
+
+    // root dom을 넘겨줌
+    this.root = patch(this.root);
+
+    this.vNode = newVNode;
   }
 
   //이벤트 위임
