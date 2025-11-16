@@ -1,4 +1,6 @@
-import createComponent from "./core/Component.js";
 import App from "./App.js";
+import { ComponentManager } from "./core/ComponentManager.js";
 
-createComponent(App, "#root");
+const manager = new ComponentManager();
+
+manager.mount(App, "#root");
