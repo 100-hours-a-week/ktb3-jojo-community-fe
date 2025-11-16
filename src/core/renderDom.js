@@ -1,4 +1,5 @@
 //html string -> DocumentFragment (dom)
+//TODO: tag 규칙 잘못되면 error 띄우기
 function htmlToFragment(html) {
   const range = document.createRange();
   const fragment = range.createContextualFragment(html);

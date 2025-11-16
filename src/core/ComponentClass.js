@@ -56,11 +56,22 @@ export class ComponentClass {
   }
 
   unmount() {
+    if (!this.isMounted) return;
+
+    //dom 에서 root 제거
+    if (this.root && this.root.parentNode) {
+      this.root.parentNode.removeChild(this.root);
+    }
+
+    //이벤트 정리
+    this.eventDelegator?.clearHandlers();
+    this.eventDelegator = null;
+
+    //초기화
     this.isMounted = false;
     this.vNode = null;
     this.root = null;
 
-    this.delegate = eventDelegator(this.dom);
     this.hookOptions = {
       currentStateKey: 0,
       states: [],
@@ -73,12 +84,6 @@ export class ComponentClass {
       return;
     }
     const newVNode = this.render();
-
-    if (newVNode?.type !== this.vNode?.type) {
-      this.unmount();
-      this.mount();
-      return;
-    }
 
     const patch = diff(this.vNode, newVNode);
 
