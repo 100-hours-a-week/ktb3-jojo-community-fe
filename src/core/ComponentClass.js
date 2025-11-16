@@ -10,10 +10,15 @@ export class ComponentClass {
     this.root = null; //실제 dom ?
 
     this.delegate = eventDelegator(this.dom);
+    this.hookOptions = {
+      currentStateKey: 0,
+      states: [],
+    };
   }
 
   //vNode만 생성
   render() {
+    this.hookOptions.currentStateKey = 0;
     const html = this.componentFunction(this.props);
     const newVNode = htmlToVNode(html);
     console.log(newVNode);
@@ -67,5 +72,34 @@ export class ComponentClass {
   //이벤트 위임
   on(selector, eventType, handler) {
     this.delegate.on(selector, eventType, handler);
+  }
+
+  useState(initState) {
+    const key = this.hookOptions.currentStateKey;
+
+    //최초 호출일 때만 초기값
+    if (this.hookOptions.states.length === key) {
+      this.hookOptions.states.push(initState);
+    }
+
+    const state = this.hookOptions.states[key];
+
+    const setState = (next) => {
+      console.log(next);
+      const prev = this.hookOptions.states[key];
+      const value = next;
+      //렌더 패스
+      if (Object.is(prev, value)) return;
+
+      this.hookOptions.states[key] = value;
+
+      //rerender
+      this.update();
+    };
+
+    // 다음 useState를 위해 key 증가
+    this.hookOptions.currentStateKey += 1;
+
+    return [state, setState];
   }
 }
