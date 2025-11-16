@@ -1,8 +1,6 @@
-export default function App({ hello }) {
+export default function App() {
   return `
-      <div>
-        <button class="btn">버튼</button>
-        ${hello}
+      <div class="container">
       </div>
     `;
 }

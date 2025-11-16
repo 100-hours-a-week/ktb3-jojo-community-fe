@@ -1,3 +1,4 @@
+import { eventDelegator } from "./eventDelegator.js";
 import { htmlToVNode, renderDom } from "./renderDom.js";
 
 export class ComponentClass {
@@ -7,6 +8,8 @@ export class ComponentClass {
     this.isMounted = false;
     this.vNode = null;
     this.root = null; //실제 dom ?
+
+    this.delegate = eventDelegator(this.dom);
   }
 
   //vNode만 생성
@@ -43,6 +46,8 @@ export class ComponentClass {
 
     this.root = dom;
     this.isMounted = true;
+
+    console.log(this);
   }
 
   update() {
@@ -57,5 +62,10 @@ export class ComponentClass {
     //한번에 patch Queue 반영 (commit)
 
     this.vNode = newVNode; // 최신 스냅샷 저장
+  }
+
+  //이벤트 위임
+  on(selector, eventType, handler) {
+    this.delegate.on(selector, eventType, handler);
   }
 }

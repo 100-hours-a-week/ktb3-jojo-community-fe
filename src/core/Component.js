@@ -7,7 +7,11 @@ import { ComponentClass } from "./ComponentClass.js";
  * @returns
  */
 
-export default function createComponent(componentFunction, props, selector) {
+export default function createComponent(
+  componentFunction,
+  selector,
+  props = {}
+) {
   console.log(componentFunction);
   const component = new ComponentClass(componentFunction, props);
   component.mount(selector); //사용 시점에 mount
