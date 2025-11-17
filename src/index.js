@@ -1,6 +1,6 @@
-import App from "./App.js";
 import { ComponentManager } from "./core/ComponentManager.js";
+import LoginPage from "./pages/Login/index.js";
 
 const manager = new ComponentManager();
 
-manager.mount(App, "#root");
+manager.mount(LoginPage, "#root");

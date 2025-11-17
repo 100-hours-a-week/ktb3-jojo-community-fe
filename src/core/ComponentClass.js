@@ -10,7 +10,7 @@ export class ComponentClass {
     this.vNode = null;
     this.root = null; //실제 dom ?
 
-    this.delegate = eventDelegator(this.dom);
+    this.delegate = null;
     this.hookOptions = {
       currentStateKey: 0,
       states: [],
@@ -38,6 +38,8 @@ export class ComponentClass {
         ? document.querySelector(selectorOrRoot)
         : selectorOrRoot;
 
+    this.delegate = eventDelegator(container);
+
     if (!container) {
       throw new Error(selectorOrRoot);
     }
@@ -52,7 +54,7 @@ export class ComponentClass {
     this.root = dom;
     this.isMounted = true;
 
-    console.log(this);
+    console.log("mounted");
   }
 
   unmount() {
@@ -64,7 +66,7 @@ export class ComponentClass {
     }
 
     //이벤트 정리
-    this.eventDelegator?.clearHandlers();
+    this.eventDelegator?.clearHandlers(this);
     this.eventDelegator = null;
 
     //초기화
@@ -80,7 +82,6 @@ export class ComponentClass {
 
   update() {
     if (!this.isMounted) {
-      this.mount();
       return;
     }
     const newVNode = this.render();
@@ -95,7 +96,11 @@ export class ComponentClass {
 
   //이벤트 위임
   on(selector, eventType, handler) {
-    this.delegate.on(selector, eventType, handler);
+    console.log("on");
+    if (!this.delegate) {
+      return console.error("not mounted");
+    }
+    this.delegate.on(selector, eventType, handler, this);
   }
 
   useState(initState) {
