@@ -4,13 +4,15 @@
  */
 
 export const invalidateEmail = (emailInput, errorCallback) => {
-  if (emailInput.trim()) return;
-  errorCallback();
+  if (emailInput.trim()) return true;
+  errorCallback?.();
+  return false;
 };
 
 export const invalidatePassword = (pwInput, errorCallback) => {
-  if (pwInput.trim() && pwInput.length >= 8) return;
-  errorCallback();
+  if (pwInput.trim() && pwInput.length >= 8) return true;
+  errorCallback?.();
+  return false;
 };
 
 export const invalidatePasswordConfirm = (

@@ -1,9 +1,16 @@
 import { fetchWrapper } from "../../api/fetchWrapper.js";
 import { SERVER_URL } from "../../api/constants/endpoint.js";
+import {
+  invalidateEmail,
+  invalidatePassword,
+} from "../../shared/lib/utils/invalidateInput.js";
+import { INPUT_HELPER_TEXT } from "../../shared/constants/error.js";
 
 export default function LoginPage() {
   const [email, setEmail] = this.useState("");
   const [password, setPassword] = this.useState("");
+  const [showEmailError, setShowEmailError] = this.useState(false);
+  const [showPasswordError, setShowPasswordError] = this.useState(false);
 
   const moveToSignup = this.registerHandler("click", () => {
     console.log("clicked");
@@ -11,6 +18,10 @@ export default function LoginPage() {
   });
 
   const postLogin = this.registerHandler("click", async () => {
+    setShowEmailError(!invalidateEmail(email));
+    setShowPasswordError(!invalidatePassword(password));
+    if (showEmailError || showPasswordError) return;
+
     const payload = { email, password };
 
     await fetchWrapper.post({
@@ -34,7 +45,6 @@ export default function LoginPage() {
   return `
     <div class="container">
       <div id="header" class="header"></div>
-
       <div id="login">
         <div class="container-item">
           <form id="loginForm" class="login-box container-item-inner">
@@ -48,6 +58,10 @@ export default function LoginPage() {
                 data-onchange="${handleChangeEmail}"
                 placeholder="이메일을 입력해주세요"
               />
+          <div class="helper-text is-error">${
+            showEmailError ? INPUT_HELPER_TEXT.ENTER_EMAIL : ""
+          }</div>
+
             </div>
             <div class="form-group">
               <label for="password">비밀번호</label>
@@ -59,7 +73,9 @@ export default function LoginPage() {
                 data-onchange="${handleChangePassword}"
                 placeholder="비밀번호를 입력해주세요"
               />
-              <div class="helper-text"></div>
+          <div class="helper-text is-error">${
+            showPasswordError ? INPUT_HELPER_TEXT.ENTER_PASSWORD : ""
+          }</div>
             </div>
             <div class="btn-group flex_col_gap1">
               <button id="btnLoginSubmit" class="btn btn-primary" type="button"
