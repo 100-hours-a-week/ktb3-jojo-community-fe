@@ -1,6 +1,7 @@
 import { diff } from "./diff.js";
-import { eventDelegator } from "./eventDelegator.js";
 import { htmlToVNode, renderDom } from "./renderDom.js";
+import { registerHandler } from "./handlerStore.js";
+import { setupEventDelegator } from "./eventDelegator.js";
 
 export class ComponentClass {
   constructor(componentFunction, initialProps = {}) {
@@ -10,7 +11,6 @@ export class ComponentClass {
     this.vNode = null;
     this.root = null; //실제 dom ?
 
-    this.delegate = null;
     this.hookOptions = {
       currentStateKey: 0,
       states: [],
@@ -20,7 +20,7 @@ export class ComponentClass {
   //vNode만 생성
   render() {
     this.hookOptions.currentStateKey = 0;
-    const html = this.componentFunction(this.props);
+    const html = this.componentFunction.call(this, this.props);
     const newVNode = htmlToVNode(html);
     if (!newVNode) {
       throw new Error(newVNode);
@@ -38,11 +38,12 @@ export class ComponentClass {
         ? document.querySelector(selectorOrRoot)
         : selectorOrRoot;
 
-    this.delegate = eventDelegator(container);
-
     if (!container) {
       throw new Error(selectorOrRoot);
     }
+
+    // 루트에 이벤트 위임 한 번만 세팅
+    setupEventDelegator(container);
 
     this.vNode = this.render();
     const dom = renderDom(this.vNode);
@@ -64,10 +65,6 @@ export class ComponentClass {
     if (this.root && this.root.parentNode) {
       this.root.parentNode.removeChild(this.root);
     }
-
-    //이벤트 정리
-    this.eventDelegator?.clearHandlers(this);
-    this.eventDelegator = null;
 
     //초기화
     this.isMounted = false;
@@ -92,15 +89,6 @@ export class ComponentClass {
     this.root = patch(this.root);
 
     this.vNode = newVNode;
-  }
-
-  //이벤트 위임
-  on(selector, eventType, handler) {
-    console.log("on");
-    if (!this.delegate) {
-      return console.error("not mounted");
-    }
-    this.delegate.on(selector, eventType, handler, this);
   }
 
   useState(initState) {
@@ -130,5 +118,16 @@ export class ComponentClass {
     this.hookOptions.currentStateKey += 1;
 
     return [state, setState];
+  }
+
+  /**
+   * 컴포넌트 내부에서 이벤트 핸들러를 등록
+   * @param {*} eventType
+   * @param {&} handler
+   * @returns {string} handlerId (data-on${eventType}에 넣을 값)
+   */
+  registerHandler(eventType, handler) {
+    const id = registerHandler(handler);
+    return id;
   }
 }

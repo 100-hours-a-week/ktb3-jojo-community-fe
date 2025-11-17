@@ -1,40 +1,31 @@
+import { getHandler } from "./handlerStore.js";
+
+let isDelegatorSetup = false;
+
 /**
- * 이벤트 위임을 통해 root에서 모든 이벤트를 처리하는 함수
- * @param {HTMLElement} root - 이벤트를 위임받을 루트 DOM
+ * root에서 모든 이벤트를 위임 처리 (한번만 등록)
+ * @param {HTMLElement} root
  */
-export function eventDelegator(root) {
-  const eventsMap = {}; //클로저, { click: [ { selector, handler, owner } ] }
+export function setupEventDelegator(root) {
+  if (isDelegatorSetup) return;
+  isDelegatorSetup = true;
 
-  function on(selector, eventType = "click", handler, owner = null) {
-    if (!eventsMap[eventType]) {
-      eventsMap[eventType] = [];
-      console.log(eventsMap);
+  const supportedEvents = ["click", "change", "submit"];
 
-      root.addEventListener(eventType, (e) => {
-        const target = e.target;
-        const handlers = eventsMap[eventType];
+  supportedEvents.forEach((type) => {
+    root.addEventListener(type, (e) => {
+      const attrName = `data-on${type}`; //onclick과 구분하기 위해
 
-        for (const entry of handlers) {
-          const { selector, handler } = entry;
-          const matched = target.closest(selector);
-          if (matched && root.contains(matched)) {
-            handler(e, matched);
-          }
+      let el = e.target;
+      while (el && el !== root) {
+        const handlerId = el.getAttribute?.(attrName);
+        if (handlerId) {
+          const handler = getHandler(handlerId);
+          if (handler) handler(e);
+          break;
         }
-      });
-    }
-
-    eventsMap[eventType].push({ selector, handler, owner });
-  }
-
-  //root에서 모든 이벤트 리스너 제거
-  function clearHandlers(owner) {
-    Object.keys(eventsMap).forEach((eventType) => {
-      eventsMap[eventType] = eventsMap[eventType].filter(
-        (entry) => entry.owner !== owner
-      );
+        el = el.parentElement;
+      }
     });
-  }
-
-  return { on, clearHandlers };
+  });
 }
