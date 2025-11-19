@@ -1,3 +1,4 @@
+import { h, Fragment } from "../../../src/vdom.js";
 import { fetchWrapper } from "../../api/fetchWrapper.js";
 import { SERVER_URL } from "../../api/constants/endpoint.js";
 import {
@@ -42,7 +43,7 @@ export default function LoginPage() {
     setPassword(e.target.value);
   });
 
-  return `
+  return (
     <div class="container">
       <div id="header" class="header"></div>
       <div id="login">
@@ -58,10 +59,9 @@ export default function LoginPage() {
                 data-onchange="${handleChangeEmail}"
                 placeholder="이메일을 입력해주세요"
               />
-          <div class="helper-text is-error">${
-            showEmailError ? INPUT_HELPER_TEXT.ENTER_EMAIL : ""
-          }</div>
-
+              <div class="helper-text is-error">
+                ${showEmailError ? INPUT_HELPER_TEXT.ENTER_EMAIL : ""}
+              </div>
             </div>
             <div class="form-group">
               <label for="password">비밀번호</label>
@@ -73,18 +73,25 @@ export default function LoginPage() {
                 data-onchange="${handleChangePassword}"
                 placeholder="비밀번호를 입력해주세요"
               />
-          <div class="helper-text is-error">${
-            showPasswordError ? INPUT_HELPER_TEXT.ENTER_PASSWORD : ""
-          }</div>
+              <div class="helper-text is-error">
+                ${showPasswordError ? INPUT_HELPER_TEXT.ENTER_PASSWORD : ""}
+              </div>
             </div>
             <div class="btn-group flex_col_gap1">
-              <button id="btnLoginSubmit" class="btn btn-primary" type="button"
-              data-onclick="${postLogin}"
+              <button
+                id="btnLoginSubmit"
+                class="btn btn-primary"
+                type="button"
+                data-onclick="${postLogin}"
               >
                 로그인
               </button>
-              <button id="btnMoveSignup" class="btn btn-text" type="button"
-              data-onclick="${moveToSignup}">
+              <button
+                id="btnMoveSignup"
+                class="btn btn-text"
+                type="button"
+                data-onclick="${moveToSignup}"
+              >
                 회원가입
               </button>
             </div>
@@ -92,5 +99,5 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  `;
+  );
 }
