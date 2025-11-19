@@ -1,3 +1,18 @@
+:root {
+  /* Primitive or base tokens (기본 팔레트용) */
+  --color-blue-50: #eff6ff;
+  --color-blue-500: #3b82f6;
+  --color-orange-500: #f97316;
+  --color-gray-900: #111827;
+  --color-gray-100: #f3f4f6;
+
+  /* Semantic tokens (의미 기반 토큰) */
+  --color-bg: var(--color-gray-100); /* background-color */
+  --color-text: var(--color-gray-900); /* text-color */
+  --color-main: var(--color-blue-500); /* main-color */
+  --color-point: var(--color-orange-500); /* point-color */
+}
+
 /* select element */
 
 * {
