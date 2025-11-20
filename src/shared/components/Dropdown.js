@@ -2,11 +2,7 @@ import { SERVER_URL } from "../../api/constants/endpoint.js";
 import { fetchWrapper } from "../../api/fetchWrapper.js";
 import { PATHS } from "../constants/paths.js";
 import { NodeElement } from "../lib/domHandler/NodeElementClass.js";
-import {
-  initTheme,
-  toggleTheme,
-  getPreferredTheme,
-} from "../lib/utils/theme.js";
+import { toggleTheme, getPreferredTheme } from "../lib/utils/theme.js";
 
 export const Dropdown = () => {
   const theme = getPreferredTheme();
