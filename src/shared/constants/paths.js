@@ -20,7 +20,7 @@ export const PATHS = {
     ABSOLUTE: `${BASE_PATH}/Signup/signup.html`,
   },
   USER_EDIT: {
-    NICKNAME: `${BASE_PATH}//UserProfileEditor/userProfileEditor.html?option=nickname`,
-    PASSWORD: `${BASE_PATH}//UserProfileEditor/userProfileEditor.html?option=password`,
+    NICKNAME: `${BASE_PATH}/UserProfileEditor/userProfileEditor.html?option=nickname`,
+    PASSWORD: `${BASE_PATH}/UserProfileEditor/userProfileEditor.html?option=password`,
   },
 };

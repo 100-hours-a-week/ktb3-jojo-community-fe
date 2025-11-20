@@ -1,16 +1,67 @@
+/* base tokens */
 :root {
-  /* Primitive or base tokens (기본 팔레트용) */
-  --color-blue-50: #eff6ff;
-  --color-blue-500: #3b82f6;
-  --color-orange-500: #f97316;
-  --color-gray-900: #111827;
+  --color-green-500: #1db954; /* 메인 그린 */
+  --color-green-400: #1ed760;
+
+  --color-black-true: #000000;
+  --color-gray-950: #0b0b0b;
+  --color-gray-900: #121212; /* 앱 배경 */
+  --color-gray-800: #181818; /* 카드/섹션 배경 */
+  --color-gray-700: #282828;
+
+  /* 라이트 모드용 */
+  --color-gray-50: #f9fafb;
   --color-gray-100: #f3f4f6;
 
-  /* Semantic tokens (의미 기반 토큰) */
-  --color-bg: var(--color-gray-100); /* background-color */
-  --color-text: var(--color-gray-900); /* text-color */
-  --color-main: var(--color-blue-500); /* main-color */
-  --color-point: var(--color-orange-500); /* point-color */
+  /* Text / UI */
+  --color-white: #ffffff;
+  --color-text-muted: #989797;
+}
+
+/* Dark Theme */
+:root[data-theme="dark"] {
+  /* 페이지/섹션 배경 */
+  --color-bg: var(--color-gray-900); /* 전체 배경 */
+  --color-surface: var(--color-gray-800); /* 카드, 패널 */
+  --color-bg-soft: var(--color-gray-700);
+
+  /* 텍스트 */
+  --color-text: var(--color-white); /* 기본 텍스트 */
+  --color-text-muted: var(--color-text-muted); /* 서브 텍스트 */
+
+  /* 메인 / 포인트 */
+  --color-main: var(--color-green-500); /* 메인 브랜드 색 */
+  --color-main-soft: var(--color-green-400);
+  --color-point: var(--color-green-400); /* 포인트/호버 등 */
+
+  /* 보더 / 디바이더 */
+  --color-border-subtle: #282828;
+  --color-border-strong: #3b3b3b;
+
+  /* 상태 색 */
+  --color-danger: #f87171;
+  --color-warning: #fbbf24;
+  --color-success: #4ade80;
+}
+
+/* Light Theme */
+:root[data-theme="light"] {
+  --color-bg: var(--color-gray-50);
+  --color-surface: var(--color-white);
+
+  --color-text: #111827;
+  --color-text-muted: #6b7280;
+
+  --color-main: var(--color-green-500);
+  --color-main-soft: var(--color-green-400);
+  --color-point: #16a34a;
+
+  --color-border-subtle: #e5e7eb;
+  --color-border-strong: #d1d5db;
+
+  --color-danger: #dc2626;
+  --color-warning: #d97706;
+  --color-success: #16a34a;
 }
 
 /* select element */
@@ -27,13 +78,22 @@ button {
 
 /* 기본 설정 여기에 */
 body {
-  background-color: #f4f5f7;
+  background-color: var(--color-bg);
+  color: var(--color-text);
   font-size: 1rem;
 }
 
-textarea {
+textarea,
+input {
   border: none;
   resize: none;
+  background-color: transparent;
+  color: var(--color-text);
+}
+
+textarea:focus,
+input:focus {
+  outline: none;
 }
 
 .container {
@@ -47,7 +107,7 @@ textarea {
 /* header */
 .header {
   padding: 20px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--color-border-strong);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -64,12 +124,13 @@ textarea {
 .header h1 {
   font-size: 24px;
   font-weight: 600;
-  color: #333;
+  color: var(--color-text);
 }
 /* header arror */
 
 .left-arrow {
   cursor: pointer;
+  color: var(--color-main);
 }
 
 .container-item {
@@ -91,12 +152,12 @@ textarea {
 }
 
 .btn-primary {
-  background-color: #aca0eb;
+  background-color: var(--color-main);
   color: white;
 }
 
 .btn-primary:hover {
-  background-color: #dad5ff;
+  background-color: var(--color-main-soft);
 }
 
 .btn-small {
@@ -120,7 +181,7 @@ textarea {
 .form-group label {
   display: block;
   font-weight: 500;
-  color: #333;
+  color: var(--color-);
   margin-bottom: 8px;
 }
 
@@ -207,7 +268,7 @@ textarea {
 }
 
 .modal-btn-confirm {
-  background-color: #7b68ee;
+  background-color: var(--color-main);
   color: white;
 }
 
@@ -242,10 +303,9 @@ textarea {
   display: none;
   position: absolute;
   right: 0;
-  background-color: white;
+  background-color: var(--color-bg);
   min-width: 150px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-main);
   border-radius: 4px;
   z-index: 100;
   top: 100%;
@@ -263,11 +323,11 @@ textarea {
   width: 100%;
   text-align: left;
   cursor: pointer;
-  color: #333;
+  color: var(--color-text);
 }
 
 .dropdown-item:hover {
-  background-color: #f5f5f5;
+  background-color: var(--color-bg-soft);
 }
 
 .dropdown-item:first-child {

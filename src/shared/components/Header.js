@@ -4,6 +4,8 @@ import { SERVER_URL } from "../../api/constants/endpoint.js";
 import { RESPONSE_ERROR_MESSAGE, UNAUTHORIZED } from "../constants/error.js";
 import { PATHS } from "../constants/paths.js";
 import { Dropdown } from "./Dropdown.js";
+import { ArrowIcon } from "./LeftArrow.js";
+import { initTheme } from "../lib/utils/theme.js";
 
 /**
  *
@@ -16,19 +18,12 @@ export const Header = async ({
   showProfileImg = true,
 } = {}) => {
   const showBackBtn = !!backBtnCallback;
+  initTheme();
 
   const node = NodeElement(`
     <div>
-      ${
-        showBackBtn
-          ? `<img
-              id="goBackArrow"
-              class="left-arrow"
-              srcset="/assets/leftArrow.svg"
-            />`
-          : `<div></div>`
-      }
-      <h1>아무 말 대잔치</h1>
+      ${showBackBtn ? ArrowIcon() : `<div></div>`}
+      <h1>오늘노래추천</h1>
       ${
         showProfileImg
           ? `
@@ -64,7 +59,6 @@ export const Header = async ({
 
     node.on(".avatar", "click", () => {
       const dropdown = node.getDom().querySelector(".dropdown-content");
-      console.log(dropdown);
       dropdown.classList.toggle("active");
     });
   }
