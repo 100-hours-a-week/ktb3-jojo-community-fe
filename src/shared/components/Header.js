@@ -11,13 +11,17 @@ import { Dropdown } from "./Dropdown.js";
  * @returns
  */
 
-export const Header = async ({
-  backBtnCallback,
-  showProfileImg = true,
-} = {}) => {
+export default function Header() {
+  console.log(this);
+  const { backBtnCallback, showProfileImg } = this.props;
+
   const showBackBtn = !!backBtnCallback;
 
-  const node = NodeElement(`
+  const handler = this.registerHandler("click", () => {
+    console.log("fff");
+  });
+
+  const node = `
     <div>
       ${
         showBackBtn
@@ -28,7 +32,7 @@ export const Header = async ({
             />`
           : `<div></div>`
       }
-      <h1>아무 말 대잔치</h1>
+      <h1 data-onclick=${handler}>아무 말 대잔치</h1>
       ${
         showProfileImg
           ? `
@@ -38,36 +42,36 @@ export const Header = async ({
           : `<div class="dropdown"></div>`
       }
     </div>
-  `);
+  `;
 
-  if (showBackBtn) {
-    node.on(".left-arrow", "click", backBtnCallback);
-  }
+  // if (showBackBtn) {
+  //   node.on(".left-arrow", "click", backBtnCallback);
+  // }
 
-  // profileimage 기능
-  if (showProfileImg) {
-    const { data } = await fetchWrapper.get({
-      url: SERVER_URL.USER.CURRENT,
-      onError: (error) => {
-        if (error == UNAUTHORIZED) {
-          alert(RESPONSE_ERROR_MESSAGE.UNAUTHORIZED);
-          window.location.href = PATHS.LOGIN.ABSOLUTE;
-        }
-      },
-    });
-    const avatarEl = node.getDom().querySelector(".avatar");
-    avatarEl.src = data.profileImageUrl;
+  // // profileimage 기능
+  // if (showProfileImg) {
+  //   const { data } = await fetchWrapper.get({
+  //     url: SERVER_URL.USER.CURRENT,
+  //     onError: (error) => {
+  //       if (error == UNAUTHORIZED) {
+  //         alert(RESPONSE_ERROR_MESSAGE.UNAUTHORIZED);
+  //         window.location.href = PATHS.LOGIN.ABSOLUTE;
+  //       }
+  //     },
+  //   });
+  //   const avatarEl = node.getDom().querySelector(".avatar");
+  //   avatarEl.src = data.profileImageUrl;
 
-    //드롭다운 기능
-    const dropdownNode = Dropdown();
-    node.attachDomToSlot("dropdown", dropdownNode);
+  //   //드롭다운 기능
+  //   const dropdownNode = Dropdown();
+  //   node.attachDomToSlot("dropdown", dropdownNode);
 
-    node.on(".avatar", "click", () => {
-      const dropdown = node.getDom().querySelector(".dropdown-content");
-      console.log(dropdown);
-      dropdown.classList.toggle("active");
-    });
-  }
+  //   node.on(".avatar", "click", () => {
+  //     const dropdown = node.getDom().querySelector(".dropdown-content");
+  //     console.log(dropdown);
+  //     dropdown.classList.toggle("active");
+  //   });
+  // }
 
   return node;
-};
+}

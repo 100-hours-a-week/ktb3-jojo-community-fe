@@ -15,7 +15,6 @@ export default function LoginPage() {
 
   const moveToSignup = this.registerHandler("click", () => {
     console.log("clicked");
-    // window.router.navigate("/signup");
   });
 
   const postLogin = this.registerHandler("click", async () => {
@@ -30,7 +29,6 @@ export default function LoginPage() {
       payload,
       onSuccess: (data) => {
         alert(data.message);
-        // window.router.navigate("/articles");
       },
     });
   });
@@ -45,7 +43,8 @@ export default function LoginPage() {
 
   return (
     <div class="container">
-      <div id="header" class="header"></div>
+      <div id="header" class="header" data-component="Header" data-key="Header" data-name="Header"
+      data-prop-showProfileImg="${true}"></div>
       <div id="login">
         <div class="container-item">
           <form id="loginForm" class="login-box container-item-inner">

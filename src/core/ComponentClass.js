@@ -1,15 +1,20 @@
-import { diff } from "./diff.js";
-import { htmlToVNode, renderDom } from "./renderDom.js";
+import { htmlToVNode } from "./renderDom.js";
 import { registerHandler } from "./handlerStore.js";
-import { setupEventDelegator } from "./eventDelegator.js";
 
 export class ComponentClass {
-  constructor(componentFunction, initialProps = {}) {
+  /**
+   * @param {Function} componentFunction - 컴포넌트 함수 (App, Child 등)
+   * @param {Object} options
+   * @param {Object} options.manager - ComponentManager 인스턴스
+   * @param {Object} options.initialProps
+   */
+  constructor(componentFunction, { manager, initialProps = {} }) {
     this.componentFunction = componentFunction;
+    this.manager = manager;
     this.props = initialProps;
-    this.isMounted = false;
+
     this.vNode = null;
-    this.root = null; //실제 dom ?
+    this.rootDom = null; // 이 인스턴스가 그리는 실제 root DOM (자식일 수도 있음)
 
     this.hookOptions = {
       currentStateKey: 0,
@@ -25,76 +30,19 @@ export class ComponentClass {
     if (!newVNode) {
       throw new Error(newVNode);
     }
+
+    this.vNode = newVNode;
     return newVNode;
   }
 
-  //새로운 돔을 생성
-  mount(selectorOrRoot) {
-    if (this.isMounted) return;
-
-    //컨테이너 찾기
-    const container =
-      typeof selectorOrRoot === "string"
-        ? document.querySelector(selectorOrRoot)
-        : selectorOrRoot;
-
-    if (!container) {
-      throw new Error(selectorOrRoot);
-    }
-
-    // 루트에 이벤트 위임 한 번만 세팅
-    setupEventDelegator(container);
-
-    this.vNode = this.render();
-    const dom = renderDom(this.vNode);
-
-    //컨테이너 비우고 새 dom
-    container.innerHTML = "";
-    container.appendChild(dom);
-
-    this.root = dom;
-    this.isMounted = true;
-
-    console.log("mounted");
-  }
-
-  unmount() {
-    if (!this.isMounted) return;
-
-    //dom 에서 root 제거
-    if (this.root && this.root.parentNode) {
-      this.root.parentNode.removeChild(this.root);
-    }
-
-    //초기화
-    this.isMounted = false;
-    this.vNode = null;
-    this.root = null;
-
-    this.hookOptions = {
-      currentStateKey: 0,
-      states: [],
-    };
-  }
-
+  // 이제 root에 직접 patch 하지 않고, manager에게 “다시 렌더해”라고 알림
   update() {
-    if (!this.isMounted) {
-      return;
-    }
-    const newVNode = this.render();
-
-    const patch = diff(this.vNode, newVNode);
-
-    // root dom을 넘겨줌
-    this.root = patch(this.root);
-
-    this.vNode = newVNode;
+    this.manager.scheduleUpdate();
   }
 
   useState(initState) {
     const key = this.hookOptions.currentStateKey;
 
-    //최초 호출일 때만 초기값
     if (this.hookOptions.states.length === key) {
       this.hookOptions.states.push(initState);
     }
@@ -102,10 +50,9 @@ export class ComponentClass {
     const state = this.hookOptions.states[key];
 
     const setState = (next) => {
-      console.log(next);
       const prev = this.hookOptions.states[key];
-      const value = next;
-      //렌더 패스
+      const value = typeof next === "function" ? next(prev) : next;
+
       if (Object.is(prev, value)) return;
 
       this.hookOptions.states[key] = value;
@@ -127,7 +74,6 @@ export class ComponentClass {
    * @returns {string} handlerId (data-on${eventType}에 넣을 값)
    */
   registerHandler(eventType, handler) {
-    const id = registerHandler(handler);
-    return id;
+    return registerHandler(this, eventType, handler);
   }
 }

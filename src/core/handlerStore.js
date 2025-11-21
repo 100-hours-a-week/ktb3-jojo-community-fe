@@ -2,10 +2,9 @@ let handlerSeq = 0;
 const handlerMap = new Map();
 
 //고유 아이디로 핸들러 등록 후 id 반환
-export function registerHandler(fn) {
+export function registerHandler(owner, eventType, handler) {
   const id = `handler_${handlerSeq++}`;
-  handlerMap.set(id, fn);
-  console.log(handlerMap);
+  handlerMap.set(id, { owner, eventType, handler });
   return id;
 }
 

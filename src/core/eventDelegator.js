@@ -18,10 +18,12 @@ export function setupEventDelegator(root) {
 
       let el = e.target;
       while (el && el !== root) {
-        const handlerId = el.getAttribute?.(attrName);
-        if (handlerId) {
-          const handler = getHandler(handlerId);
-          if (handler) handler(e);
+        const id = el.getAttribute?.(attrName);
+        if (id) {
+          const entry = getHandler(id);
+          if (entry?.eventType === type) {
+            entry.handler.call(entry.owner, e);
+          }
           break;
         }
         el = el.parentElement;
