@@ -100,4 +100,7 @@ vanilla js
 
 ## 4. 동작 영상
 
-<video src="docs/preview.mp4" controls width="600"></video>
+<video controls width="700">
+  <source src="https://raw.githubusercontent.com/100-hours-a-week/ktb3-jojo-community-fe/jojo/feature/implement-with-vanilla-js/docs/preview.mp4
+  " type="video/mp4">
+</video>
