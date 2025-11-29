@@ -53,8 +53,10 @@ form.addEventListener("submit", async (e) => {
   await fetchWrapper.post({
     url: SERVER_URL.USER.LOGIN,
     payload,
-    onSuccess: (data) => {
-      alert(data.message);
+    onSuccess: (res) => {
+      const { data, message } = res;
+      fetchWrapper.setAccessToken(data.accessToken);
+      alert(message);
       window.location.replace(PATHS.ARTICLES_LIST.ABSOLUTE);
     },
     onError: alert,

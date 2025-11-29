@@ -1,15 +1,31 @@
+const TOKEN_KEY = "accessToken";
+
 const _fetch = () => {
+  const authorization = { accessToken: localStorage.getItem(TOKEN_KEY) || "" };
+
   const baseRequestOptions = (method, isFormData = false) => ({
     method,
-    headers: isFormData ? {} : { "Content-Type": "application/json" },
+    headers: isFormData
+      ? { Authorization: authorization.accessToken }
+      : {
+          "Content-Type": "application/json",
+          Authorization: authorization.accessToken,
+        },
     credentials: "include",
   });
 
+  function setAccessToken(accessToken) {
+    authorization.accessToken = `Bearer ${accessToken}`;
+    localStorage.setItem(TOKEN_KEY, `Bearer ${accessToken}`);
+  }
+
   return {
+    setAccessToken,
     get: async ({ url, onSuccess, onError }) => {
       const requestOptions = {
         ...baseRequestOptions("GET"),
       };
+      console.log(requestOptions);
       const res = await fetch(url, requestOptions);
       return handleResponse(res, onSuccess, onError);
     },

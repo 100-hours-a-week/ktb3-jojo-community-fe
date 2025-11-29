@@ -271,3 +271,7 @@ textarea {
   border-radius: 50%;
   background-color: #ddd;
 }
+
+.btn-text {
+  color: var(--color-text);
+}
