@@ -7,7 +7,7 @@
     "transform": {
       "react": {
         "runtime": "classic",
-        "pragma": "h",
+        "pragma": "createElement",
         "pragmaFrag": "Fragment"
       }
     },

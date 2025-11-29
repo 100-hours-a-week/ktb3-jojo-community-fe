@@ -1,15 +1,10 @@
 import { getHandler } from "./handlerStore.js";
 
-let isDelegatorSetup = false;
-
 /**
  * root에서 모든 이벤트를 위임 처리 (한번만 등록)
  * @param {HTMLElement} root
  */
 export function setupEventDelegator(root) {
-  if (isDelegatorSetup) return;
-  isDelegatorSetup = true;
-
   const supportedEvents = ["click", "change", "submit"];
 
   supportedEvents.forEach((type) => {
@@ -20,10 +15,8 @@ export function setupEventDelegator(root) {
       while (el && el !== root) {
         const id = el.getAttribute?.(attrName);
         if (id) {
-          const entry = getHandler(id);
-          if (entry?.eventType === type) {
-            entry.handler.call(entry.owner, e);
-          }
+          const handler = getHandler(id);
+          handler?.(e);
           break;
         }
         el = el.parentElement;
