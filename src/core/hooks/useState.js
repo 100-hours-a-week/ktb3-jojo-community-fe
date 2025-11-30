@@ -1,5 +1,5 @@
 import { GlobalState } from "../GlobalState.js";
-import { reconciler } from "../reconciler/reconciler.js";
+import { render } from "../render.js";
 
 /**
  * @description - useState hook
@@ -24,11 +24,7 @@ export function useState(initialValue) {
     if (Object.is(prev, newValue)) return;
 
     if (GlobalState.rootDom && GlobalState.rootElement) {
-      reconciler(
-        GlobalState.rootDom,
-        GlobalState.currentInstance,
-        GlobalState.rootElement
-      );
+      render(GlobalState.rootElement, GlobalState.rootDom);
     }
   };
 

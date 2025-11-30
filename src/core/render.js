@@ -9,5 +9,9 @@ import { reconciler } from "./reconciler/reconciler.js";
 export function render(element, container) {
   GlobalState.rootDom = container;
   GlobalState.rootElement = element;
-  GlobalState.rootInstance = reconciler(container, null, element);
+  GlobalState.rootInstance = reconciler(
+    container,
+    GlobalState.rootInstance,
+    element
+  );
 }
