@@ -1,4 +1,4 @@
-import { h, Fragment } from "../../../src/vdom.js";
+import { createElement, Fragment } from "../../../src/vdom.js";
 import { fetchWrapper } from "../../api/fetchWrapper.js";
 import { SERVER_URL } from "../../api/constants/endpoint.js";
 import {
@@ -6,18 +6,21 @@ import {
   invalidatePassword,
 } from "../../shared/lib/utils/invalidateInput.js";
 import { INPUT_HELPER_TEXT } from "../../shared/constants/error.js";
+import { useState } from "../../core/hooks/useState.js";
+import { useNavigate } from "../../core/router.js";
+import { PATHS } from "../../shared/routing/paths.js";
 
 export default function LoginPage() {
-  const [email, setEmail] = this.useState("");
-  const [password, setPassword] = this.useState("");
-  const [showEmailError, setShowEmailError] = this.useState(false);
-  const [showPasswordError, setShowPasswordError] = this.useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showEmailError, setShowEmailError] = useState(false);
+  const [showPasswordError, setShowPasswordError] = useState(false);
 
-  const moveToSignup = this.registerHandler("click", () => {
-    console.log("clicked");
-  });
+  const moveToSignup = () => {
+    useNavigate(PATHS.SIGNUP);
+  };
 
-  const postLogin = this.registerHandler("click", async () => {
+  const postLogin = async () => {
     setShowEmailError(!invalidateEmail(email));
     setShowPasswordError(!invalidatePassword(password));
     if (showEmailError || showPasswordError) return;
@@ -31,20 +34,18 @@ export default function LoginPage() {
         alert(data.message);
       },
     });
-  });
+  };
 
-  const handleChangeEmail = this.registerHandler("change", (e) => {
+  const handleChangeEmail = (e) => {
     setEmail(e.target.value);
-  });
+  };
 
-  const handleChangePassword = this.registerHandler("change", (e) => {
+  const handleChangePassword = (e) => {
     setPassword(e.target.value);
-  });
+  };
 
   return (
     <div class="container">
-      <div id="header" class="header" data-component="Header" data-key="Header" data-name="Header"
-      data-prop-showProfileImg="${true}"></div>
       <div id="login">
         <div class="container-item">
           <form id="loginForm" class="login-box container-item-inner">
@@ -54,12 +55,12 @@ export default function LoginPage() {
                 type="email"
                 id="email"
                 name="email"
-                value="${email}"
-                data-onchange="${handleChangeEmail}"
+                value={email}
+                onChange={handleChangeEmail}
                 placeholder="이메일을 입력해주세요"
               />
               <div class="helper-text is-error">
-                ${showEmailError ? INPUT_HELPER_TEXT.ENTER_EMAIL : ""}
+                {showEmailError ? INPUT_HELPER_TEXT.ENTER_EMAIL : ""}
               </div>
             </div>
             <div class="form-group">
@@ -68,12 +69,12 @@ export default function LoginPage() {
                 id="password"
                 name="password"
                 type="password"
-                value="${password}"
-                data-onchange="${handleChangePassword}"
+                value={password}
+                onChange={handleChangePassword}
                 placeholder="비밀번호를 입력해주세요"
               />
               <div class="helper-text is-error">
-                ${showPasswordError ? INPUT_HELPER_TEXT.ENTER_PASSWORD : ""}
+                {showPasswordError ? INPUT_HELPER_TEXT.ENTER_PASSWORD : ""}
               </div>
             </div>
             <div class="btn-group flex_col_gap1">
@@ -81,7 +82,7 @@ export default function LoginPage() {
                 id="btnLoginSubmit"
                 class="btn btn-primary"
                 type="button"
-                data-onclick="${postLogin}"
+                onClick={postLogin}
               >
                 로그인
               </button>
@@ -89,7 +90,7 @@ export default function LoginPage() {
                 id="btnMoveSignup"
                 class="btn btn-text"
                 type="button"
-                data-onclick="${moveToSignup}"
+                onClick={moveToSignup}
               >
                 회원가입
               </button>
