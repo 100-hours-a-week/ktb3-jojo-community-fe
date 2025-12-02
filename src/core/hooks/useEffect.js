@@ -11,7 +11,6 @@ export function useEffect(setup, deps) {
   const hookIndex = GlobalState.hookIndex++;
 
   const prevHook = instance.hooks[hookIndex];
-  console.log("prevHook", prevHook);
 
   /**@typedef {Hook} */
   const newHook = createEffectHook({ setup, deps, cleanup: prevHook?.cleanup });
@@ -24,8 +23,6 @@ export function useEffect(setup, deps) {
     instance,
     hook: newHook,
   });
-
-  console.log(GlobalState.effectList);
 }
 
 /**

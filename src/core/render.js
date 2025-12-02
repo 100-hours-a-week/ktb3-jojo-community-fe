@@ -19,7 +19,6 @@ export function render(element, container) {
 
   //커밋 이후
   const effectsList = GlobalState.effectList;
-  console.log("effectsList", effectsList);
   effectsList.forEach(({ hook }) => {
     hook.cleanup?.(); //이전
     const cleanup = hook.setup?.();

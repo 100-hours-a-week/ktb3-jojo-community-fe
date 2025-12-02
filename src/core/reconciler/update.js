@@ -39,6 +39,7 @@ export function updateHostInstance(parentDom, instance, element) {
   if (element.type === "TEXT_ELEMENT") {
     if (instance.dom.nodeValue !== element.props.nodeValue) {
       instance.dom.nodeValue = element.props.nodeValue ?? "";
+      console.log("text_node_udpated", instance.dom);
     }
     instance.element = element;
     return instance;
@@ -66,5 +67,6 @@ export function updateHostInstance(parentDom, instance, element) {
   }
 
   instance.childInstances = newChildInstances;
+  console.log("updatedInstance", instance, element);
   return instance;
 }

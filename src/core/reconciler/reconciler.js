@@ -12,8 +12,6 @@ import { updateComponentInstance, updateHostInstance } from "./update.js";
  */
 
 export function reconciler(parentDom, instance, element) {
-  console.log(GlobalState);
-
   //[unmount]
   if (element === undefined || element === null) {
     if (instance?.dom) {
