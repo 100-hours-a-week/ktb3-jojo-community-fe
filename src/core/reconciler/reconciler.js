@@ -1,5 +1,6 @@
 import { GlobalState } from "../GlobalState.js";
 import { mount } from "./mount.js";
+import { unmount } from "./unmount.js";
 import { updateComponentInstance, updateHostInstance } from "./update.js";
 
 /**
@@ -13,10 +14,10 @@ import { updateComponentInstance, updateHostInstance } from "./update.js";
 export function reconciler(parentDom, instance, element) {
   console.log(GlobalState);
 
-  //TODO: [unmount]
-  if (element === null || element === undefined) {
-    if (instance && instance.dom) {
-      parentDom.removeChild(instance.dom);
+  //[unmount]
+  if (!element) {
+    if (instance?.dom) {
+      unmount(parentDom, instance);
     }
     return null;
   }
@@ -33,20 +34,16 @@ export function reconciler(parentDom, instance, element) {
     element = textElement;
   }
 
-  console.log("instance", instance, "element", element);
-
   //[mount]
   //첫
   if (!instance) {
-    console.log("mount", element);
     return mount(parentDom, element);
   }
 
   //루트부터 type 다르면 인스턴스 버리고 다시 mount
   if (instance.element.type !== element.type) {
-    console.log("mount", instance.element.type, element.type);
     if (instance.dom) {
-      parentDom.removeChild(instance.dom);
+      unmount(parentDom, instance);
     }
 
     return mount(parentDom, element);
@@ -58,8 +55,7 @@ export function reconciler(parentDom, instance, element) {
   if (typeof element.type === "function") {
     return updateComponentInstance(parentDom, instance, element);
   } else {
-    //host dom
-    console.log("update", element);
+    //host dom, text dom
     return updateHostInstance(parentDom, instance, element);
   }
 }

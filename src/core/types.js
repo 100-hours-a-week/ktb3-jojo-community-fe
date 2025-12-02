@@ -21,4 +21,42 @@
  * @property {VDom} rootElement - 마지막에 렌더한 vdom
  * @property {Instance} currentInstance - 현재 렌더중인 컴포넌트 인스턴스
  * @property {Number} hookIndex - hook 번호 저장용 (instance 마다)
+ * @property {Effect[]} effectList - render 중 쌓은 effectList
+ */
+
+/**
+ * @typedef {Object} Effect
+ * @property {Instance} instance
+ * @property {Hook} hook
+ */
+
+//hook
+
+/**
+ * @typedef {"state"|"effect"} HookTag
+ */
+
+/**
+ * @typedef {Object} BaseHook
+ * @property {HookTag} tag
+ */
+
+/**
+ * @typedef {BaseHook & {
+ *   tag: 'state',
+ *   value: any
+ * }} StateHook
+ */
+
+/**
+ * @typedef {BaseHook & {
+ *   tag: 'effect',
+ *   setup: () => (void | (() => void)),
+ *   deps: any[] | undefined,
+ *   cleanup: null | (() => void)
+ * }} EffectHook
+ */
+
+/**
+ * @typedef {StateHook | EffectHook} Hook
  */

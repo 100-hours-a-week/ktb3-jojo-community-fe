@@ -1,5 +1,6 @@
 import { GlobalState } from "../GlobalState.js";
 import { render } from "../render.js";
+import { createStateHook } from "./util/createHook.js";
 
 /**
  * @description - useState hook
@@ -8,16 +9,28 @@ import { render } from "../render.js";
  */
 
 export function useState(initialValue) {
+  // console.log(
+  //   "useState - GlobalState",
+  //   JSON.parse(JSON.stringify(GlobalState))
+  // );
   const hooks = GlobalState.currentInstance.hooks;
   const stateIndex = GlobalState.hookIndex++;
-
   if (hooks.length <= stateIndex) {
-    hooks[stateIndex] = initialValue;
+    hooks[stateIndex] = createStateHook(initialValue);
   }
 
   const setState = (newValue) => {
+    // console.log(
+    //   "setState - GlobalState",
+    //   JSON.parse(JSON.stringify(GlobalState)),
+    //   "hooks",
+    //   hooks,
+    //   "stateIndex",
+    //   stateIndex
+    // );
+
     const prev = hooks[stateIndex];
-    hooks[stateIndex] =
+    hooks[stateIndex].value =
       typeof newValue === "function" ? newValue(prev) : newValue;
 
     console.log(GlobalState, prev);
@@ -28,5 +41,5 @@ export function useState(initialValue) {
     }
   };
 
-  return [hooks[stateIndex], setState];
+  return [hooks[stateIndex].value, setState];
 }
