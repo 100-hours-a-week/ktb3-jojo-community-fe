@@ -275,3 +275,121 @@ textarea {
 .btn-text {
   color: var(--color-text);
 }
+
+/* 로그인 */
+
+.login-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* signup */
+.signup-box {
+  padding: 20px;
+}
+
+.form-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.profile-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #ddd;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ccc;
+  cursor: pointer;
+  object-fit: contain;
+}
+
+.profile-photo:hover {
+  background-color: #e8e8e8;
+}
+
+.plus-icon {
+  font-size: 40px;
+  color: #999;
+}
+
+/**articleList*/
+.list-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.list-header-text {
+  text-align: center;
+  font-size: 24px;
+  margin: 4px 0;
+}
+
+.list-header-button {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+/* 카드 아이템 */
+
+.list-item {
+  border-radius: 4px;
+  margin-bottom: 12px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  > div {
+    padding: 12px;
+  }
+}
+
+.list-item:hover {
+  background-color: #f0f0f0;
+}
+
+.list-item-header {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  gap: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.list-item-title {
+  font-weight: 600;
+  color: #333;
+}
+
+.list-item-footer {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+}
+
+.list-item-meta {
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  color: #999;
+}
+
+.list-item-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #ddd;
+}

@@ -9,6 +9,7 @@ import { INPUT_HELPER_TEXT } from "../../shared/constants/error.js";
 import { useState } from "../../core/hooks/useState.js";
 import { useNavigate } from "../../core/router.js";
 import { PATHS } from "../../shared/routing/paths.js";
+import { useEffect } from "../../core/hooks/useEffect.js";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -30,8 +31,11 @@ export default function LoginPage() {
     await fetchWrapper.post({
       url: SERVER_URL.USER.LOGIN,
       payload,
-      onSuccess: (data) => {
-        alert(data.message);
+      onSuccess: (res) => {
+        const { data, message } = res;
+        fetchWrapper.setAccessToken(data.accessToken);
+        alert(message);
+        useNavigate(PATHS.ARTICLE_LIST);
       },
     });
   };
