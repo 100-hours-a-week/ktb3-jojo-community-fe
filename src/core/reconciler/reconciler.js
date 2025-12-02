@@ -15,7 +15,7 @@ export function reconciler(parentDom, instance, element) {
   console.log(GlobalState);
 
   //[unmount]
-  if (!element) {
+  if (element === undefined || element === null) {
     if (instance?.dom) {
       unmount(parentDom, instance);
     }
