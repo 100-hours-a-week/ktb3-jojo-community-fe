@@ -20,6 +20,16 @@ export function useState(initialValue) {
   }
 
   const setState = (newValue) => {
+    const prev = hooks[stateIndex].value;
+    const next = typeof newValue === "function" ? newValue(prev) : newValue;
+
+    if (Object.is(prev, next)) return;
+
+    hooks[stateIndex].value = next;
+
+    if (GlobalState.rootDom && GlobalState.rootElement) {
+      render(GlobalState.rootElement, GlobalState.rootDom);
+    }
     // console.log(
     //   "setState - GlobalState",
     //   JSON.parse(JSON.stringify(GlobalState)),
@@ -29,16 +39,9 @@ export function useState(initialValue) {
     //   stateIndex
     // );
 
-    const prev = hooks[stateIndex];
-    hooks[stateIndex].value =
-      typeof newValue === "function" ? newValue(prev) : newValue;
-
-    console.log(GlobalState, prev);
-    if (Object.is(prev, newValue)) return;
-
-    if (GlobalState.rootDom && GlobalState.rootElement) {
-      render(GlobalState.rootElement, GlobalState.rootDom);
-    }
+    // if (currentInstance.element && currentInstance.dom) {
+    //   render(currentInstance.element, currentInstance.dom);
+    // }
   };
 
   return [hooks[stateIndex].value, setState];
