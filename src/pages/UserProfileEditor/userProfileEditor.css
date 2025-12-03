@@ -6,13 +6,13 @@
   display: block;
   font-size: 13px;
   font-weight: 500;
-  color: #333;
+  color: var(--color-text-muted);
   margin-bottom: 8px;
 }
 
 .profile-field p {
   font-size: 14px;
-  color: #333;
+  color: var(--color-text-muted);
 }
 
 .profile-detail-container {
@@ -21,6 +21,7 @@
 
 .profile-detail-photo {
   position: relative;
+  width: fit-content;
 }
 
 .profile-detail-photo img {
@@ -28,7 +29,6 @@
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background-color: #ddd;
   margin: 0 auto 16px;
   display: flex;
   align-items: center;
@@ -42,7 +42,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background: rgba(0, 0, 0, 0.5);
-  color: #fff;
+  color: var(--color-text);
   padding: 6px 12px;
   border-radius: 6px;
   font-size: 0.9rem;
@@ -61,13 +61,16 @@
 .profile-info-label {
   font-size: 13px;
   font-weight: 500;
-  color: #333;
+  color: var(--color-text-muted);
   margin-bottom: 4px;
 }
 
 .profile-info-value {
   font-size: 14px;
-  color: #333;
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-main) !important;
+  border-radius: 0px !important;
+  padding: 10px 12px;
 }
 
 .password-form {

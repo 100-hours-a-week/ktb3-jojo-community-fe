@@ -21,7 +21,7 @@ export const NicknameEditorComponent = ({
     <div class="container-item-inner">
       <div class="form-title">회원정보 수정</div>
       <form id="userProfileEditForm" class="user-profile-edit-form">
-        <div class="form-group">
+        <div class="form-group flex_col_center_gap1">
           <div class="profile-detail-photo" id="profileEditBox">
             <img
               class="profile-detail-photo-img"

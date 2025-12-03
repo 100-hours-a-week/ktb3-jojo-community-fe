@@ -122,7 +122,7 @@ const setupDeleteModal = (articleId) => {
 
     if (response.data || response.message) {
       closeModal("deletePostModal");
-      window.location.href = "/pages/articlesList/articlesList.html";
+      window.location.href = PATHS.ARTICLES_LIST.ABSOLUTE;
     }
   });
 };
