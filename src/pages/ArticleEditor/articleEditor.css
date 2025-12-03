@@ -1,0 +1,37 @@
+.write-form {
+  width: 100%;
+}
+
+.write-form textarea {
+  width: 100%;
+  min-height: 300px;
+  padding: 10px 12px;
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+.write-form textarea::placeholder {
+  color: #999;
+}
+
+.image-preview-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.preview-image-wrapper {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.preview-image {
+  width: 10rem;
+  height: 10rem;
+  object-fit: cover;
+}
+
+.delete-image-preview-btn {
+  background-color: #999;
+  width: fit-content;
+}
