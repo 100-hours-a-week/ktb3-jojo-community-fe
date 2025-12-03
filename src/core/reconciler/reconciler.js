@@ -1,4 +1,3 @@
-import { GlobalState } from "../GlobalState.js";
 import { mount } from "./mount.js";
 import { unmount } from "./unmount.js";
 import { updateComponentInstance, updateHostInstance } from "./update.js";
@@ -39,7 +38,10 @@ export function reconciler(parentDom, instance, element) {
   }
 
   //루트부터 type 다르면 인스턴스 버리고 다시 mount
-  if (instance.element.type !== element.type) {
+  if (
+    instance.element.type !== element.type ||
+    instance.element.key !== element.key
+  ) {
     if (instance.dom) {
       unmount(parentDom, instance);
     }

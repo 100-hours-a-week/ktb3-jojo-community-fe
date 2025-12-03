@@ -54,19 +54,80 @@ export function updateHostInstance(parentDom, instance, element) {
   const oldChildInstances = instance.childInstances;
   const newChildElements = element.children || [];
 
-  const newChildInstances = [];
-  const maxLen = Math.max(oldChildInstances.length, newChildElements.length);
-
-  for (let i = 0; i < maxLen; i++) {
-    const childInstance = reconciler(
-      dom,
-      oldChildInstances[i],
-      newChildElements[i]
-    );
-    if (childInstance) newChildInstances.push(childInstance);
-  }
+  const newChildInstances = matchReconcileWithKey(
+    dom,
+    oldChildInstances,
+    newChildElements
+  );
 
   instance.childInstances = newChildInstances;
-  console.log("updatedInstance", instance, element);
+  // console.log("updatedInstance", instance, element);
   return instance;
+}
+
+// child 의 diff를 key 기반으로 구현
+
+/**
+ * @param {HTMLElement} parentDom
+ * @param {Instance[]} oldChildInstances
+ * @param {Element[]} newChildElements
+ */
+function matchReconcileWithKey(parentDom, oldChildInstances, newChildElements) {
+  const oldInstancesToMap = new Map();
+  const newChildInstances = []; //return
+
+  const moveQueue = [];
+
+  oldChildInstances.forEach((instance, idx) => {
+    if (oldInstancesToMap.get(instance.element.key ?? idx)) {
+      throw new Error("key 값이 고유하지 않습니다.");
+    }
+
+    oldInstancesToMap.set(instance.element.key ?? idx, {
+      instance,
+      originalLocation: idx,
+    }); //idx -> 원래의 위치
+  });
+
+  newChildElements.forEach((element, idx) => {
+    //이 idx가 현재의 위치, originalLocation 과 비교 후 변경 사항을 저장해야 함.
+    const key = element.key ?? idx;
+    const matched = oldInstancesToMap.get(key);
+    const childInstance = reconciler(parentDom, matched?.instance, element);
+
+    if (!childInstance) return;
+
+    //순서큐
+    if (matched && matched?.originalLocation !== idx) {
+      moveQueue.push({
+        instance: childInstance,
+        currentLocation: idx,
+      }); //현재 위치 가까운순으로 정렬되어 있음
+    }
+
+    newChildInstances.push(childInstance);
+  });
+
+  //순서변경 한번에 처리 (instance.dom)
+
+  // console.log("movequeue", moveQueue);
+
+  moveQueue.forEach(({ instance, currentLocation }) => {
+    //for insertBefore
+    const correctNextDom =
+      newChildInstances[currentLocation - 1]?.dom || parentDom.firstChild;
+
+    // console.log(
+    //   "correctNextDom",
+    //   correctNextDom,
+    //   "original",
+    //   originalLocation,
+    //   "cur",
+    //   currentLocation
+    // );
+
+    parentDom.insertBefore(instance.dom, correctNextDom);
+  });
+
+  return newChildInstances;
 }
