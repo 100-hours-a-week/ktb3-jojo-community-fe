@@ -1,4 +1,4 @@
-import { GlobalState } from "../GlobalState.js";
+import { globalState } from "../GlobalState.js";
 import { attachDomProps } from "./attachDomProps.js";
 import { reconciler } from "./reconciler.js";
 /**
@@ -12,8 +12,8 @@ import { reconciler } from "./reconciler.js";
 export function updateComponentInstance(parentDom, instance, element) {
   instance.element = element;
 
-  GlobalState.currentInstance = instance;
-  GlobalState.hookIndex = 0;
+  globalState.setCurrentInstance(instance);
+  globalState.resetHookIndex();
 
   const childElement = element.type(element.props ?? {});
 

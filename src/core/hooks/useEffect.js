@@ -1,4 +1,4 @@
-import { GlobalState } from "../GlobalState.js";
+import { globalState } from "../GlobalState.js";
 import { createEffectHook } from "./util/createHook.js";
 /**
  *
@@ -7,8 +7,10 @@ import { createEffectHook } from "./util/createHook.js";
  */
 
 export function useEffect(setup, deps) {
-  const instance = GlobalState.currentInstance;
-  const hookIndex = GlobalState.hookIndex++;
+  const instance = globalState.getCurrentInstance();
+  globalState.increaseHookIndex();
+
+  const hookIndex = globalState.getHookIndex();
 
   const prevHook = instance.hooks[hookIndex];
 
@@ -19,7 +21,7 @@ export function useEffect(setup, deps) {
 
   if (prevHook && isSame(deps, prevHook.deps)) return;
 
-  GlobalState.effectList.push({
+  globalState.pushEffect({
     instance,
     hook: newHook,
   });

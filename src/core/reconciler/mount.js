@@ -1,4 +1,4 @@
-import { GlobalState } from "../GlobalState.js";
+import { globalState } from "../GlobalState.js";
 import { reconciler } from "./reconciler.js";
 import { attachDomProps } from "./attachDomProps.js";
 
@@ -30,8 +30,8 @@ export function mount(parentDom, element) {
 
     //globalState 초기화
     //TODO: globalstate class 로 관리
-    GlobalState.currentInstance = instance;
-    GlobalState.hookIndex = 0;
+    globalState.setCurrentInstance(instance);
+    globalState.resetHookIndex();
 
     const childElement = element.type(element.props ?? {}); //vdom
     const childInstance = reconciler(parentDom, null, childElement); //재귀
