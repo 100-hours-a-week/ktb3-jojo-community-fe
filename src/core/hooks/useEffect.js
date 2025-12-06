@@ -8,18 +8,17 @@ import { createEffectHook } from "./util/createHook.js";
 
 export function useEffect(setup, deps) {
   const instance = globalState.getCurrentInstance();
+  const hookIndex = globalState.getHookIndex();
   globalState.increaseHookIndex();
 
-  const hookIndex = globalState.getHookIndex();
-
   const prevHook = instance.hooks[hookIndex];
+
+  if (prevHook && isSame(deps, prevHook.deps)) return;
 
   /**@typedef {Hook} */
   const newHook = createEffectHook({ setup, deps, cleanup: prevHook?.cleanup });
 
   instance.hooks[hookIndex] = newHook;
-
-  if (prevHook && isSame(deps, prevHook.deps)) return;
 
   globalState.pushEffect({
     instance,

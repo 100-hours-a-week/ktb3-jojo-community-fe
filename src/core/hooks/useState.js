@@ -10,11 +10,13 @@ import { createStateHook } from "./util/createHook.js";
 
 export function useState(initialValue) {
   const hooks = globalState.getCurrentInstanceHook();
-  globalState.increaseHookIndex();
   const stateIndex = globalState.getHookIndex();
+  globalState.increaseHookIndex();
   if (hooks.length <= stateIndex) {
     hooks[stateIndex] = createStateHook(initialValue);
   }
+
+  console.log("useState", hooks, stateIndex, initialValue);
 
   const setState = (newValue) => {
     const prev = hooks[stateIndex].value;
