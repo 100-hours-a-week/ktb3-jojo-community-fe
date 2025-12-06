@@ -57,7 +57,6 @@ export default function LoginPage() {
               <label for="email">이메일</label>
               <input
                 type="email"
-                id="email"
                 name="email"
                 value={email}
                 onChange={handleChangeEmail}
@@ -70,7 +69,6 @@ export default function LoginPage() {
             <div class="form-group">
               <label for="password">비밀번호</label>
               <input
-                id="password"
                 name="password"
                 type="password"
                 value={password}
@@ -82,20 +80,10 @@ export default function LoginPage() {
               </div>
             </div>
             <div class="btn-group flex_col_gap1">
-              <button
-                id="btnLoginSubmit"
-                class="btn btn-primary"
-                type="button"
-                onClick={postLogin}
-              >
+              <button class="btn btn-primary" type="button" onClick={postLogin}>
                 로그인
               </button>
-              <button
-                id="btnMoveSignup"
-                class="btn btn-text"
-                type="button"
-                onClick={moveToSignup}
-              >
+              <button class="btn btn-text" type="button" onClick={moveToSignup}>
                 회원가입
               </button>
             </div>
