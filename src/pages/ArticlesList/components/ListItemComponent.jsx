@@ -6,12 +6,13 @@ export default function ListItemComponent({
   createdAt,
   status,
   title,
+  onClick,
 }) {
   const { id, nickname, profileImageUrl } = author;
   const { comments, likes, views } = status;
 
   return (
-    <div id="article" class="list-item">
+    <div id="article" class="list-item" onClick={onClick}>
       <div class="list-item-header">
         <div class="list-item-title">{title}</div>
         <div class="list-item-meta">

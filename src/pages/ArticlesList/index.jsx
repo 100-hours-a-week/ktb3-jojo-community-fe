@@ -33,10 +33,7 @@ export default function ArticleListPage() {
         <div class="container-item">
           <div class="list-header">
             <div class="list-header-text">
-              <p>안녕하세요,</p>
-              <p>
-                아무 말 대잔치 <strong>게시판</strong>입니다.
-              </p>
+              <p>하루 한 곡을 추천해보세요</p>
             </div>
             <div class="list-header-button">
               <button
@@ -53,7 +50,15 @@ export default function ArticleListPage() {
 
           <div>
             {articles?.map((article, idx) => {
-              return <ListItemComponent key={article.articleId} {...article} />;
+              return (
+                <ListItemComponent
+                  onClick={() => {
+                    useNavigate(PATHS.ARTICLE_DETAIL(article.articleId));
+                  }}
+                  key={article.articleId}
+                  {...article}
+                />
+              );
             })}
           </div>
         </div>
