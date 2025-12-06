@@ -16,8 +16,6 @@ export function useState(initialValue) {
     hooks[stateIndex] = createStateHook(initialValue);
   }
 
-  console.log("useState", hooks, stateIndex, initialValue);
-
   const setState = (newValue) => {
     const prev = hooks[stateIndex].value;
     const next = typeof newValue === "function" ? newValue(prev) : newValue;

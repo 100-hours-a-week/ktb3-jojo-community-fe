@@ -25,7 +25,6 @@ const _fetch = () => {
       const requestOptions = {
         ...baseRequestOptions("GET"),
       };
-      console.log(requestOptions);
       const res = await fetch(url, requestOptions);
       return handleResponse(res, onSuccess, onError);
     },

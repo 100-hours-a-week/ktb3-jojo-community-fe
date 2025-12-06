@@ -39,8 +39,6 @@ export function attachDomProps(dom, prevProps = {}, nextProps = {}) {
 
   //새로운 props 적용
   Object.keys(nextProps).forEach((name) => {
-    console.log("dom changed", dom, nextProps);
-
     if (name === "children") return;
     const value = nextProps[name];
 

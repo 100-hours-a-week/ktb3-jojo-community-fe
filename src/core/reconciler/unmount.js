@@ -11,8 +11,6 @@ export function unmount(instance) {
   /**@type {HTMLElement} */
   const dom = instance.dom;
 
-  console.log(instance, instance.childInstances);
-
   // 자식 DOM 제거
   if (Array.isArray(instance.childInstances)) {
     instance.childInstances.forEach((child) => {
@@ -45,7 +43,7 @@ function cleanupInstance(instance) {
 
 function safeRemoveChild(parent, child) {
   if (!parent || !child) return;
-  console.log("childParent", child.parentNode, parent);
+
   // child가 parent의 자식인지 확인
   if (Object.is(child.parentNode, parent)) {
     parent.removeChild(child);

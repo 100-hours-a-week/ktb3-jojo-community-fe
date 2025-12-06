@@ -31,7 +31,6 @@ export function updateHostInstance(parentDom, instance, element) {
   if (element.type === "TEXT_ELEMENT") {
     if (dom.nodeValue !== element.props.nodeValue) {
       dom.nodeValue = element.props.nodeValue ?? "";
-      console.log("text_node_udpated", dom);
     }
     instance.element = element;
     return instance;
@@ -51,7 +50,7 @@ export function updateHostInstance(parentDom, instance, element) {
   );
 
   instance.childInstances = newChildInstances;
-  // console.log("updatedInstance", instance, element);
+
   return instance;
 }
 
@@ -101,7 +100,6 @@ function matchReconcileWithKey(parentDom, oldChildInstances, newChildElements) {
 
   //남은 oldInstancesToMap가 있다면 정리
   oldInstancesToMap.forEach(({ instance }) => {
-    console.log("old", instance);
     unmount(instance);
   });
 

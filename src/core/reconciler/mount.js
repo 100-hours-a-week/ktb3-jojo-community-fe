@@ -29,7 +29,6 @@ export function mount(parentDom, element) {
     const instance = createNewInstance(element);
 
     reconcileComponentInstance(parentDom, instance, element);
-    console.log("component_node_mount", instance?.dom);
 
     return instance;
   }
@@ -37,7 +36,6 @@ export function mount(parentDom, element) {
   //텍스트
   if (element.type === "TEXT_ELEMENT") {
     const dom = document.createTextNode(element.props.nodeValue ?? "");
-    console.log("text_node_mount", dom);
     parentDom.appendChild(dom);
 
     return {
