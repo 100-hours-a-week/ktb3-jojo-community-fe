@@ -1,5 +1,3 @@
-import { createElement } from "../vdom.js";
-
 import { render } from "./render.js";
 import { globalState } from "./GlobalState.js";
 import { routing } from "../shared/routing/routing.js";
@@ -10,7 +8,7 @@ function rerenderRoot() {
 }
 
 export function RouterView() {
-  const pathname = window.location.pathname;
+  const pathname = window.location.hash;
   const createVNode = routing[pathname];
 
   const PageVNode = createVNode();
@@ -19,7 +17,6 @@ export function RouterView() {
 }
 
 /**
- *
  * @param {String} pathname
  * @returns
  */

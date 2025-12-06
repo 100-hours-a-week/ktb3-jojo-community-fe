@@ -6,7 +6,7 @@ import ArticleEditPage from "../../pages/ArticleEditor/index.js";
 import ArticleListPage from "../../pages/ArticlesList/index.js";
 import LoginPage from "../../pages/Login/index.js";
 import SignupPage from "../../pages/Signup/index.js";
-import UserEditPage from "../../pages/UserProfileEditor/UserEditPage.js";
+import UserEditPage from "../../pages/UserProfileEditor/index.js";
 
 import { PATHS } from "./paths.js";
 
