@@ -1,6 +1,7 @@
-import { globalState } from "../GlobalState.js";
 import { attachDomProps } from "./attachDomProps.js";
 import { reconciler } from "./reconciler.js";
+import { reconcileComponentInstance } from "./reconcileComponentInstance.js";
+import { unmount } from "./unmount.js";
 /**
  * @description - 함수 컴포넌트 업데이트
  * @param {HTMLElement} parentDom
@@ -11,17 +12,7 @@ import { reconciler } from "./reconciler.js";
 
 export function updateComponentInstance(parentDom, instance, element) {
   instance.element = element;
-
-  globalState.setCurrentInstance(instance);
-  globalState.resetHookIndex();
-
-  const childElement = element.type(element.props ?? {});
-
-  const oldChildInstance = instance.childInstances[0] || null;
-  const childInstance = reconciler(parentDom, oldChildInstance, childElement);
-
-  instance.childInstances = childInstance ? [childInstance] : [];
-  instance.dom = childInstance?.dom ?? null;
+  reconcileComponentInstance(parentDom, instance, element);
 
   return instance;
 }
@@ -35,17 +26,16 @@ export function updateComponentInstance(parentDom, instance, element) {
  */
 
 export function updateHostInstance(parentDom, instance, element) {
+  const dom = instance.dom;
   //텍스트 노드 업데이트
   if (element.type === "TEXT_ELEMENT") {
-    if (instance.dom.nodeValue !== element.props.nodeValue) {
-      instance.dom.nodeValue = element.props.nodeValue ?? "";
-      console.log("text_node_udpated", instance.dom);
+    if (dom.nodeValue !== element.props.nodeValue) {
+      dom.nodeValue = element.props.nodeValue ?? "";
+      console.log("text_node_udpated", dom);
     }
     instance.element = element;
     return instance;
   }
-
-  const dom = instance.dom;
 
   attachDomProps(dom, instance.element.props ?? {}, element.props ?? {});
 
@@ -65,8 +55,9 @@ export function updateHostInstance(parentDom, instance, element) {
   return instance;
 }
 
-// child 의 diff를 key 기반으로 구현
+const KEY_DUPLICATED_ERROR = "key 값이 고유하지 않습니다.";
 
+// child 의 diff를 key 기반으로 구현
 /**
  * @param {HTMLElement} parentDom
  * @param {Instance[]} oldChildInstances
@@ -75,12 +66,11 @@ export function updateHostInstance(parentDom, instance, element) {
 function matchReconcileWithKey(parentDom, oldChildInstances, newChildElements) {
   const oldInstancesToMap = new Map();
   const newChildInstances = []; //return
-
   const moveQueue = [];
 
   oldChildInstances.forEach((instance, idx) => {
     if (oldInstancesToMap.get(instance.element.key ?? idx)) {
-      throw new Error("key 값이 고유하지 않습니다.");
+      throw new Error(KEY_DUPLICATED_ERROR);
     }
 
     oldInstancesToMap.set(instance.element.key ?? idx, {
@@ -93,6 +83,7 @@ function matchReconcileWithKey(parentDom, oldChildInstances, newChildElements) {
     //이 idx가 현재의 위치, originalLocation 과 비교 후 변경 사항을 저장해야 함.
     const key = element.key ?? idx;
     const matched = oldInstancesToMap.get(key);
+    oldInstancesToMap.delete(key);
     const childInstance = reconciler(parentDom, matched?.instance, element);
 
     if (!childInstance) return;
@@ -108,23 +99,17 @@ function matchReconcileWithKey(parentDom, oldChildInstances, newChildElements) {
     newChildInstances.push(childInstance);
   });
 
+  //남은 oldInstancesToMap가 있다면 정리
+  oldInstancesToMap.forEach(({ instance }) => {
+    console.log("old", instance);
+    unmount(instance);
+  });
+
   //순서변경 한번에 처리 (instance.dom)
-
-  // console.log("movequeue", moveQueue);
-
   moveQueue.forEach(({ instance, currentLocation }) => {
     //for insertBefore
     const correctNextDom =
       newChildInstances[currentLocation - 1]?.dom || parentDom.firstChild;
-
-    // console.log(
-    //   "correctNextDom",
-    //   correctNextDom,
-    //   "original",
-    //   originalLocation,
-    //   "cur",
-    //   currentLocation
-    // );
 
     parentDom.insertBefore(instance.dom, correctNextDom);
   });
