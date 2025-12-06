@@ -1,6 +1,6 @@
 import { render } from "./render.js";
 import { globalState } from "./GlobalState.js";
-import { routing } from "../shared/routing/routing.js";
+import { resolveRoute } from "../shared/routing/routing.js";
 
 function rerenderRoot() {
   if (!globalState.getRootElement() || !globalState.getRootDom()) return;
@@ -9,10 +9,8 @@ function rerenderRoot() {
 
 export function RouterView() {
   const pathname = window.location.hash;
-  const createVNode = routing[pathname];
-
-  const PageVNode = createVNode();
-
+  const { render, params } = resolveRoute(pathname);
+  const PageVNode = render?.(params) ?? null;
   return PageVNode;
 }
 

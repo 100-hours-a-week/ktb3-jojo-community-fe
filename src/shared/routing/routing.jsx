@@ -10,28 +10,71 @@ import UserEditPage from "../../pages/UserProfileEditor/index.js";
 
 import { PATHS } from "./paths.js";
 
-const routes = {
-  [PATHS.MAIN]: () => <LoginPage />,
-  [PATHS.ARTICLE_LIST]: () => <ArticleListPage />,
-  [PATHS.ARTICLE_DETAIL]: () => <ArticleDetailPage />,
-  [PATHS.ARTICLE_EDIT]: () => <ArticleEditPage />,
-  [PATHS.ARTICLE_NEW]: () => <ArticleCreatePage />,
+const routes = [
+  { path: PATHS.MAIN, component: () => <LoginPage /> },
+  { path: PATHS.ARTICLE_LIST, component: () => <ArticleListPage /> },
+  {
+    path: PATHS.ARTICLE_DETAIL,
+    component: (params) => <ArticleDetailPage params={params} />,
+  },
+  {
+    path: PATHS.ARTICLE_EDIT,
+    component: (params) => <ArticleEditPage params={params} />,
+  },
+  { path: PATHS.ARTICLE_NEW, component: () => <ArticleCreatePage /> },
 
-  [PATHS.LOGIN]: () => <LoginPage />,
-  [PATHS.SIGNUP]: () => <SignupPage />,
+  { path: PATHS.LOGIN, component: () => <LoginPage /> },
+  { path: PATHS.SIGNUP, component: () => <SignupPage /> },
 
-  [PATHS.USER_EDIT_NICKNAME]: () => <UserEditPage type="nickname" />,
-  [PATHS.USER_EDIT_PASSWORD]: () => <UserEditPage type="password" />,
-};
+  {
+    path: PATHS.USER_EDIT_NICKNAME,
+    component: () => <UserEditPage type="nickname" />,
+  },
+  {
+    path: PATHS.USER_EDIT_PASSWORD,
+    component: () => <UserEditPage type="password" />,
+  },
+];
 
 const NotFoundPage = () => <div>404 Not Found</div>;
 
-export const routing = new Proxy(routes, {
-  get(target, pathname) {
-    console.log("routed", pathname);
-    if (pathname in target) {
-      return target[pathname];
+const stripHash = (path = "") => path.replace(/^#/, "");
+const normalizePath = (path) =>
+  typeof path === "function" ? path() : path || "#/";
+
+function matchPath(pattern, pathname) {
+  const normalizedPattern = stripHash(normalizePath(pattern));
+  const normalizedPath = stripHash(pathname || "#/");
+
+  const patternSeg = normalizedPattern.split("/").filter(Boolean);
+  const pathSeg = normalizedPath.split("/").filter(Boolean);
+
+  if (patternSeg.length !== pathSeg.length) return null;
+
+  const params = {};
+
+  for (let i = 0; i < patternSeg.length; i++) {
+    const pat = patternSeg[i];
+    const cur = pathSeg[i];
+
+    if (pat.startsWith(":")) {
+      const key = pat.slice(1);
+      params[key] = decodeURIComponent(cur);
+    } else if (pat !== cur) {
+      return null;
     }
-    return () => <NotFoundPage />;
-  },
-});
+  }
+
+  return params;
+}
+
+export function resolveRoute(pathname) {
+  for (const route of routes) {
+    const params = matchPath(route.path, pathname);
+    if (params !== null) {
+      return { render: route.component, params };
+    }
+  }
+
+  return { render: () => <NotFoundPage />, params: {} };
+}
