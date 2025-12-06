@@ -85,6 +85,15 @@ class GlobalState {
   clearEffectList() {
     this.#effectList = [];
   }
+
+  /**
+   *
+   * @param {Instance} instance
+   */
+  prepareRenderContext(instance) {
+    this.setCurrentInstance(instance);
+    this.resetHookIndex();
+  }
 }
 
 /**@type {GlobalState} */
