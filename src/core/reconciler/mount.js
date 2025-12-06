@@ -1,6 +1,6 @@
-import { GlobalState } from "../GlobalState.js";
 import { reconciler } from "./reconciler.js";
 import { attachDomProps } from "./attachDomProps.js";
+import { reconcileComponentInstance } from "./reconcileComponentInstance.js";
 
 /**
  *
@@ -28,16 +28,7 @@ export function mount(parentDom, element) {
   if (typeof element.type === "function") {
     const instance = createNewInstance(element);
 
-    //globalState 초기화
-    //TODO: globalstate class 로 관리
-    GlobalState.currentInstance = instance;
-    GlobalState.hookIndex = 0;
-
-    const childElement = element.type(element.props ?? {}); //vdom
-    const childInstance = reconciler(parentDom, null, childElement); //재귀
-
-    instance.childInstances = childInstance ? [childInstance] : [];
-    instance.dom = childInstance?.dom ?? null;
+    reconcileComponentInstance(parentDom, instance, element);
     console.log("component_node_mount", instance?.dom);
 
     return instance;
@@ -63,8 +54,8 @@ export function mount(parentDom, element) {
   attachDomProps(dom, {}, element.props ?? {});
 
   const childInstances = [];
-  (element.children || []).forEach((child) => {
-    const childInstance = reconciler(dom, null, child);
+  (element.children || []).forEach((childElement) => {
+    const childInstance = reconciler(dom, null, childElement);
     if (childInstance) childInstances.push(childInstance);
   });
 

@@ -4,15 +4,15 @@ import App from "./App.js";
 import { render } from "./core/render.js";
 import { setupEventDelegator } from "./core/event/eventDelegator.js";
 import { setupRouterListeners } from "./core/router.js";
-import { GlobalState } from "./core/GlobalState.js";
+import { globalState } from "./core/GlobalState.js";
 
 //setup globalState
 const root = document.getElementById("root");
 const rootVDom = <App />;
-GlobalState.rootDom = root;
-GlobalState.rootElement = rootVDom;
+globalState.setRootDom(root);
+globalState.setRootElement(rootVDom);
 
-//setup eventDelegator for roo
+//setup eventDelegator for root
 setupEventDelegator(root);
 //setup router env
 setupRouterListeners();

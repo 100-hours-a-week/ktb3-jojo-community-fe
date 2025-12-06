@@ -37,20 +37,19 @@
  */
 
 /**
- * @typedef {Object} BaseHook
- * @property {HookTag} tag
- */
-
-/**
- * @typedef {BaseHook & {
+ * @typedef {{
  *   tag: 'state',
- *   value: any
+ *   value: any,
+ *   setup: null,
+ *   deps: null,
+ *   cleanup: null
  * }} StateHook
  */
 
 /**
- * @typedef {BaseHook & {
+ * @typedef {{
  *   tag: 'effect',
+ *   value: null,
  *   setup: () => (void | (() => void)),
  *   deps: any[] | undefined,
  *   cleanup: null | (() => void)

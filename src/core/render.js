@@ -1,4 +1,4 @@
-import { GlobalState } from "./GlobalState.js";
+import { globalState } from "./GlobalState.js";
 import { reconciler } from "./reconciler/reconciler.js";
 
 /**
@@ -7,18 +7,20 @@ import { reconciler } from "./reconciler/reconciler.js";
  * @param {HTMLElement} container
  */
 export function render(element, container) {
-  GlobalState.rootDom = container;
-  GlobalState.rootElement = element;
-  GlobalState.effectList = [];
+  globalState.setRootDom(container);
+  globalState.setRootElement(element);
 
-  GlobalState.rootInstance = reconciler(
+  globalState.clearEffectList();
+
+  const renderedInstance = reconciler(
     container,
-    GlobalState.rootInstance,
+    globalState.getRootInstance(),
     element
   );
+  globalState.setRootInstance(renderedInstance);
 
   //커밋 이후
-  const effectsList = GlobalState.effectList;
+  const effectsList = globalState.getEffectList();
   effectsList.forEach(({ hook }) => {
     hook.cleanup?.(); //이전
     const cleanup = hook.setup?.();

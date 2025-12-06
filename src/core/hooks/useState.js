@@ -1,4 +1,4 @@
-import { GlobalState } from "../GlobalState.js";
+import { globalState } from "../GlobalState.js";
 import { render } from "../render.js";
 import { createStateHook } from "./util/createHook.js";
 
@@ -9,15 +9,14 @@ import { createStateHook } from "./util/createHook.js";
  */
 
 export function useState(initialValue) {
-  // console.log(
-  //   "useState - GlobalState",
-  //   JSON.parse(JSON.stringify(GlobalState))
-  // );
-  const hooks = GlobalState.currentInstance.hooks;
-  const stateIndex = GlobalState.hookIndex++;
+  const hooks = globalState.getCurrentInstanceHook();
+  const stateIndex = globalState.getHookIndex();
+  globalState.increaseHookIndex();
   if (hooks.length <= stateIndex) {
     hooks[stateIndex] = createStateHook(initialValue);
   }
+
+  console.log("useState", hooks, stateIndex, initialValue);
 
   const setState = (newValue) => {
     const prev = hooks[stateIndex].value;
@@ -27,17 +26,9 @@ export function useState(initialValue) {
 
     hooks[stateIndex].value = next;
 
-    if (GlobalState.rootDom && GlobalState.rootElement) {
-      render(GlobalState.rootElement, GlobalState.rootDom);
+    if (globalState.getRootDom() && globalState.getRootElement()) {
+      render(globalState.getRootElement(), globalState.getRootDom());
     }
-    // console.log(
-    //   "setState - GlobalState",
-    //   JSON.parse(JSON.stringify(GlobalState)),
-    //   "hooks",
-    //   hooks,
-    //   "stateIndex",
-    //   stateIndex
-    // );
 
     // if (currentInstance.element && currentInstance.dom) {
     //   render(currentInstance.element, currentInstance.dom);

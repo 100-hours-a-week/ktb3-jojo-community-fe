@@ -14,7 +14,7 @@ export function reconciler(parentDom, instance, element) {
   //[unmount]
   if (element === undefined || element === null) {
     if (instance?.dom) {
-      unmount(parentDom, instance);
+      unmount(instance);
     }
     return null;
   }
@@ -38,12 +38,9 @@ export function reconciler(parentDom, instance, element) {
   }
 
   //루트부터 type 다르면 인스턴스 버리고 다시 mount
-  if (
-    instance.element.type !== element.type ||
-    instance.element.key !== element.key
-  ) {
+  if (instance.element.type !== element.type) {
     if (instance.dom) {
-      unmount(parentDom, instance);
+      unmount(instance);
     }
 
     return mount(parentDom, element);
