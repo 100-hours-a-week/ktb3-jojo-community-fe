@@ -167,11 +167,8 @@ export default function ArticleDetailPage({ params = {} }) {
   const handleDeleteArticle = async () => {
     const response = await fetchWrapper._delete({
       url: SERVER_URL.ARTICLE.DELETE(articleId),
+      onSuccess: () => navigate(PATHS.ARTICLE_LIST),
     });
-
-    if (response?.data || response?.message) {
-      navigate(PATHS.ARTICLE_LIST);
-    }
   };
 
   const stats = [
@@ -194,15 +191,15 @@ export default function ArticleDetailPage({ params = {} }) {
   if (!article) {
     return (
       <div class="container">
-        <div id="header" class="header"></div>
-        <div>게시글을 불러오는 중입니다.</div>
+        <div class="loading-indicator">
+          <p>Loading...</p>
+        </div>
       </div>
     );
   }
 
   return (
     <div class="container">
-      <div id="header" class="header"></div>
       <div id="detail">
         <ArticleDetailContainer
           article={article}
@@ -218,8 +215,8 @@ export default function ArticleDetailPage({ params = {} }) {
         />
       </div>
 
-      {showDeletePostModal ? (
-        <div id="deletePostModal" class="modal">
+      {showDeletePostModal && (
+        <div id="deletePostModal" class="modal active">
           <div class="modal-content">
             <div class="modal-title">게시글을 삭제하시겠습니까?</div>
             <div class="modal-buttons">
@@ -243,10 +240,10 @@ export default function ArticleDetailPage({ params = {} }) {
             </div>
           </div>
         </div>
-      ) : null}
+      )}
 
-      {commentToDelete ? (
-        <div id="deleteCommentModal" class="modal">
+      {commentToDelete && (
+        <div id="deleteCommentModal" class="modal active">
           <div class="modal-content">
             <div class="modal-title">댓글을 삭제하시겠습니까?</div>
             <div class="modal-buttons">
@@ -267,7 +264,7 @@ export default function ArticleDetailPage({ params = {} }) {
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

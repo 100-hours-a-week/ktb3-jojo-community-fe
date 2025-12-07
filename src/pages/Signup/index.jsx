@@ -116,8 +116,6 @@ export default function SignupPage() {
 
   return (
     <div class="container">
-      <div id="header" class="header"></div>
-
       <div id="signup">
         <div class="container-item">
           <div class="signup-box container-item-inner">
@@ -214,7 +212,7 @@ export default function SignupPage() {
                 회원가입
               </button>
               {showConfirm ? (
-                <div id="signupConfirm" class="modal">
+                <div id="signupConfirm" class="modal active">
                   <div class="modal-content">
                     <div class="modal-title">회원가입을 하시겠습니까?</div>
                     <div class="modal-buttons">

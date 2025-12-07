@@ -8,27 +8,65 @@ import ListItemComponent from "./components/ListItemComponent.js";
 import { SERVER_URL } from "../../api/constants/endpoint.js";
 
 export default function ArticleListPage() {
-  const [articles, setArticles] = useState(null);
+  const [articles, setArticles] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0); // 아직 아무 페이지도 로드 안됨
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [sortBy, setSortBy] = useState("viewCnt"); // 기본값: 인기순
 
-  useEffect(() => {
-    (async () => {
-      const { data } = await fetchWrapper.get({
-        url: SERVER_URL.ARTICLE.LIST({ currentPage: 0 }),
+  const loadArticles = async (page, sort = sortBy) => {
+    if (isLoading) return;
+    if (page <= currentPage && sort === sortBy) return;
+    if (!hasMore && sort === sortBy) return;
+
+    setIsLoading(true);
+
+    try {
+      await fetchWrapper.get({
+        url: SERVER_URL.ARTICLE.LIST({ currentPage: page, sort }),
         onSuccess: (data) => {
-          setArticles(data.data.items);
+          const { items, pageInfoDto } = data.data;
+          const { nextPage, hasNext } = pageInfoDto;
+          setArticles((prev) => [...prev, ...items]);
+          setCurrentPage(page);
+          setHasMore(hasNext);
         },
       });
-    })();
-  }, []);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  // useEffect(() => {
-  //   console.log("articles changed:", articles);
-  // }, [articles]);
+  const handleSortChange = (newSort) => {
+    if (newSort === sortBy) return;
+
+    setSortBy(newSort);
+    setArticles([]);
+    setCurrentPage(0);
+    setHasMore(true);
+    loadArticles(1, newSort);
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isLoading && hasMore) {
+          loadArticles(currentPage + 1);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const sentinel = document.querySelector("#scroll-sentinel");
+    if (sentinel) observer.observe(sentinel);
+
+    return () => sentinel && observer.unobserve(sentinel);
+  }, [currentPage, isLoading, hasMore]);
 
   return (
     <div class="container">
-      <div id="header" class="header"></div>
-
       <div id="article-list">
         <div class="container-item">
           <div class="list-header">
@@ -48,7 +86,22 @@ export default function ArticleListPage() {
             </div>
           </div>
 
-          <div>
+          <div class="sort-buttons">
+            <button
+              class={sortBy === "viewCnt" ? "sort-btn active" : "sort-btn"}
+              onClick={() => handleSortChange("viewCnt")}
+            >
+              인기순
+            </button>
+            <button
+              class={sortBy === "createdAt" ? "sort-btn active" : "sort-btn"}
+              onClick={() => handleSortChange("createdAt")}
+            >
+              날짜순
+            </button>
+          </div>
+
+          <div class="article-list-container">
             {articles?.map((article, idx) => {
               return (
                 <ListItemComponent
@@ -61,6 +114,20 @@ export default function ArticleListPage() {
               );
             })}
           </div>
+
+          <div id="scroll-sentinel" class="scroll-sentinel"></div>
+
+          {isLoading && (
+            <div class="loading-indicator">
+              <p>Loading...</p>
+            </div>
+          )}
+
+          {!hasMore && articles.length > 0 && (
+            <div class="end-message">
+              <p>더 이상 게시글이 없습니다</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

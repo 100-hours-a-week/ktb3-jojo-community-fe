@@ -16,12 +16,18 @@ export function RouterView() {
 
 /**
  * @param {String} pathname
+ * @param {Object} options - Navigation options
+ * @param {Boolean} options.replace - If true, replaces current history entry instead of pushing new one
  * @returns
  */
-export function useNavigate(pathname) {
+export function useNavigate(pathname, options = {}) {
   if (window.location.pathname === pathname) return;
 
-  window.history.pushState({}, "", pathname);
+  if (options.replace) {
+    window.history.replaceState({}, "", pathname);
+  } else {
+    window.history.pushState({}, "", pathname);
+  }
   rerenderRoot();
 }
 

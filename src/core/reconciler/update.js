@@ -80,7 +80,7 @@ function matchReconcileWithKey(parentDom, oldChildInstances, newChildElements) {
 
   newChildElements.forEach((element, idx) => {
     //이 idx가 현재의 위치, originalLocation 과 비교 후 변경 사항을 저장해야 함.
-    const key = element.key ?? idx;
+    const key = element?.key ?? idx;
     const matched = oldInstancesToMap.get(key);
     oldInstancesToMap.delete(key);
     const childInstance = reconciler(parentDom, matched?.instance, element);

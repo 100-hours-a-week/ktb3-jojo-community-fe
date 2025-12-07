@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf dist && swc src -d dist && cp -R public/* dist/public",
-    "build:watch": "rm -rf dist && swc src -d dist && cp -R public/* dist/public -w"
+    "build": "rm -rf dist && swc src -d dist && mkdir -p dist/src/assets && cp -R src/assets/* dist/src/assets",
+    "build:watch": "rm -rf dist && swc src -d dist && mkdir -p dist/assets && cp -R src/assets/* dist/assets -w"
   },
   "keywords": [],
   "author": "",

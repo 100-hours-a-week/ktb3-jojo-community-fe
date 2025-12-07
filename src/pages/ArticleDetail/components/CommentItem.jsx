@@ -2,6 +2,7 @@ import { createElement } from "../../../vdom.js";
 import { useState } from "../../../core/hooks/useState.js";
 import { useEffect } from "../../../core/hooks/useEffect.js";
 import { ActionsBtn } from "./ActionsBtn.js";
+import { formatTimeAgo } from "../../../shared/lib/utils/formatDate.js";
 
 export function CommentItem({ comment, onDelete, onUpdate }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -34,14 +35,14 @@ export function CommentItem({ comment, onDelete, onUpdate }) {
   return (
     <div class="comment-item flex_row_between">
       <div>
-        <div class="comment-item-meta flex_row_center_gap1">
+        <div class="comment-item-meta flex_row_gap1">
           <div class="comment-meta-author flex_row_center_gap1">
             <img class="avatar" src={comment.author?.profileImageUrl || ""} />
             <div class="comment-author-nickname">
               {comment.author?.nickname || ""}
             </div>
           </div>
-          <div class="comment-date">{comment.createdAt}</div>
+          <div class="comment-date">{formatTimeAgo(comment.createdAt)}</div>
         </div>
         {isEditing ? (
           <div class="comment-edit-form">

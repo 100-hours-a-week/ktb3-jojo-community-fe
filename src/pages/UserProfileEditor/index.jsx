@@ -66,6 +66,7 @@ export default function UserEditPage({ type = "nickname" }) {
     const response = await fetchWrapper.put({
       url: SERVER_URL.USER.CURRENT,
       payload,
+      onSuccess: () => navigate(PATHS.ARTICLE_LIST),
     });
 
     if (response?.data || response?.message) {
@@ -97,6 +98,7 @@ export default function UserEditPage({ type = "nickname" }) {
     const response = await fetchWrapper.put({
       url: SERVER_URL.USER.CURRENT,
       payload: { password: password.trim() },
+      onSuccess: () => navigate(PATHS.ARTICLE_LIST),
     });
 
     if (response?.data || response?.message) {
@@ -119,10 +121,9 @@ export default function UserEditPage({ type = "nickname" }) {
       url: SERVER_URL.USER.SIGNOUT,
     });
 
-    if (response?.message) {
-      alert("탈퇴 성공");
-      navigate(PATHS.LOGIN);
-    }
+    alert("탈퇴 성공");
+    navigate(PATHS.LOGIN);
+    window.location.reload();
   };
 
   const renderNicknameForm = () => (
@@ -234,13 +235,12 @@ export default function UserEditPage({ type = "nickname" }) {
 
   return (
     <div id="userProfileContainer" class="container">
-      <div id="header" class="header"></div>
       <div id="profileEditSlot" class="container-item">
         {type === "password" ? renderPasswordForm() : renderNicknameForm()}
       </div>
 
       {showWithdrawModal ? (
-        <div id="profileWithdraw" class="modal">
+        <div id="profileWithdraw" class="modal active">
           <div class="modal-content">
             <div class="modal-title">회원탈퇴 하시겠습니까?</div>
             <div class="modal-buttons">

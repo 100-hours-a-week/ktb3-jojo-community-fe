@@ -24,3 +24,9 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.flex_row_gap1 {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

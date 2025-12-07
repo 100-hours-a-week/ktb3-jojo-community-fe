@@ -7,21 +7,22 @@ import ArticleListPage from "../../pages/ArticlesList/index.js";
 import LoginPage from "../../pages/Login/index.js";
 import SignupPage from "../../pages/Signup/index.js";
 import UserEditPage from "../../pages/UserProfileEditor/index.js";
+import OnboardingPage from "../../pages/Onboarding/index.js";
 
 import { PATHS } from "./paths.js";
 
 const routes = [
-  { path: PATHS.MAIN, component: () => <LoginPage /> },
+  { path: PATHS.MAIN, component: () => <OnboardingPage /> },
   { path: PATHS.ARTICLE_LIST, component: () => <ArticleListPage /> },
-  {
-    path: PATHS.ARTICLE_DETAIL,
-    component: (params) => <ArticleDetailPage params={params} />,
-  },
+  { path: PATHS.ARTICLE_NEW, component: () => <ArticleCreatePage /> },
   {
     path: PATHS.ARTICLE_EDIT,
     component: (params) => <ArticleEditPage params={params} />,
   },
-  { path: PATHS.ARTICLE_NEW, component: () => <ArticleCreatePage /> },
+  {
+    path: PATHS.ARTICLE_DETAIL,
+    component: (params) => <ArticleDetailPage params={params} />,
+  },
 
   { path: PATHS.LOGIN, component: () => <LoginPage /> },
   { path: PATHS.SIGNUP, component: () => <SignupPage /> },

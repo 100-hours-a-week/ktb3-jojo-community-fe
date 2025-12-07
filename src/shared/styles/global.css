@@ -1,7 +1,10 @@
 /* base tokens */
 :root {
-  --color-green-500: #1db954; /* 메인 그린 */
-  --color-green-400: #1ed760;
+  /* 브랜드 색상 - 주황에서 핑크로 이어지는 그라디언트 */
+  --color-brand-orange: hsl(12 88% 62%); /* 주황 */
+  --color-brand-pink: hsl(340 82% 52%); /* 핑크 */
+  --color-brand-orange-light: hsl(12 88% 70%);
+  --color-brand-pink-light: hsl(340 82% 60%);
 
   --color-black-true: #000000;
   --color-gray-950: #0b0b0b;
@@ -30,9 +33,9 @@
   --color-text-muted: var(--color-text-muted); /* 서브 텍스트 */
 
   /* 메인 / 포인트 */
-  --color-main: var(--color-green-500); /* 메인 브랜드 색 */
-  --color-main-soft: var(--color-green-400);
-  --color-point: var(--color-green-400); /* 포인트/호버 등 */
+  --color-main: var(--color-brand-orange); /* 메인 브랜드 색 */
+  --color-main-soft: var(--color-brand-orange-light);
+  --color-point: var(--color-brand-pink); /* 포인트/호버 등 */
 
   /* 보더 / 디바이더 */
   --color-border-subtle: #282828;
@@ -52,9 +55,9 @@
   --color-text: #111827;
   --color-text-muted: #6b7280;
 
-  --color-main: var(--color-green-500);
-  --color-main-soft: var(--color-green-400);
-  --color-point: #16a34a;
+  --color-main: var(--color-brand-orange);
+  --color-main-soft: var(--color-brand-orange-light);
+  --color-point: var(--color-brand-pink);
 
   --color-border-subtle: #e5e7eb;
   --color-border-strong: #d1d5db;
@@ -115,7 +118,7 @@ input:focus {
 
   > div {
     width: 100%;
-    max-width: 45rem;
+    max-width: 50rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -127,11 +130,13 @@ input:focus {
   font-weight: 600;
   color: var(--color-text);
 }
-/* header arror */
+/* header arrow */
 
 .left-arrow {
   cursor: pointer;
-  color: var(--color-main);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .container-item {
@@ -173,7 +178,7 @@ input:focus {
 }
 
 .form-title {
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   font-weight: 700;
   text-align: center;
   padding: 1rem;
@@ -346,6 +351,7 @@ input:focus {
   height: 32px;
   border-radius: 50%;
   background-color: #ddd;
+  position: relative;
 }
 
 .btn-text {
@@ -365,13 +371,6 @@ input:focus {
 /* signup */
 .signup-box {
   padding: 20px;
-}
-
-.form-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 16px;
 }
 
 .profile-photo {
@@ -395,152 +394,6 @@ input:focus {
 .plus-icon {
   font-size: 40px;
   color: #999;
-}
-
-/**articleList*/
-.list-header {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.list-header-text {
-  text-align: center;
-  font-size: 24px;
-  margin: 4px 0;
-}
-
-.list-header-button {
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
-}
-
-/* 카드 아이템 */
-
-.list-item {
-  border-radius: 4px;
-  margin-bottom: 12px;
-  background-color: #f9f9f9;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-
-  > div {
-    padding: 12px;
-  }
-}
-
-.list-item:hover {
-  background-color: #f0f0f0;
-}
-
-.list-item-header {
-  display: flex;
-  flex-direction: column;
-  align-content: flex-start;
-  gap: 10px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.list-item-title {
-  font-weight: 600;
-  color: #333;
-}
-
-.list-item-footer {
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  gap: 10px;
-}
-
-.list-item-meta {
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-  color: #999;
-}
-
-.list-item-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-color: #ddd;
-}
-
-/**card list*/
-.list-header {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.list-header-text {
-  text-align: center;
-  font-size: 24px;
-  margin: 4px 0;
-}
-
-.list-header-button {
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
-}
-
-/* 카드 아이템 */
-
-.list-item {
-  border-radius: 10px;
-  margin-bottom: 12px;
-  background-color: var(--color-bg);
-  cursor: pointer;
-  border: 1px solid var(--color-main);
-
-  > div {
-    padding: 15px;
-  }
-}
-
-.list-item:hover {
-  background-color: var(--color-bg-soft);
-}
-
-.list-item-header {
-  display: flex;
-  flex-direction: column;
-  align-content: flex-start;
-  gap: 10px;
-  border-bottom: 1px solid var(--color-surface);
-}
-
-.list-item-title {
-  font-weight: 600;
-  color: var(--color-text);
-}
-
-.list-item-footer {
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  gap: 10px;
-}
-
-.list-item-meta {
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-  color: var(--color-text-muted);
-}
-
-.list-item-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-color: #ddd;
 }
 
 /**userProfile**/
@@ -654,3 +507,22 @@ input:focus {
   border: 1px solid white;
   padding: 0.4rem 0.8rem;
 }
+
+/*logo**/
+.logo-text {
+  cursor: pointer;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(
+    135deg,
+    hsl(12 88% 62%) 0%,
+    hsl(340 82% 52%) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Import page-specific styles */
+@import "./onboarding.css";

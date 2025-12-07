@@ -1,4 +1,5 @@
 import { createElement } from "../../../vdom.js";
+import { formatTimeAgo } from "../../../shared/lib/utils/formatDate.js";
 
 export default function ListItemComponent({
   articleId,
@@ -12,20 +13,36 @@ export default function ListItemComponent({
   const { comments, likes, views } = status;
 
   return (
-    <div id="article" class="list-item" onClick={onClick}>
-      <div class="list-item-header">
-        <div class="list-item-title">{title}</div>
-        <div class="list-item-meta">
-          <div>
-            좋아요 {likes} 댓글 {comments} 조회수 {views}
+    <article class="card" onClick={onClick}>
+      <div class="content">
+        <div class="titleWrapper">
+          <h3 class="title">{title}</h3>
+          <p class="timeAgo">{formatTimeAgo(createdAt)}</p>
+        </div>
+
+        <div class="userInfo">
+          <img
+            src={profileImageUrl}
+            alt={nickname}
+            class="avatar"
+          />
+          <div class="userDetails">
+            <p class="userName">{nickname}</p>
           </div>
-          <div>{createdAt}</div>
+        </div>
+
+        <div class="actions">
+          <button class="actionButton" onClick={(e) => e.stopPropagation()}>
+            <span>❤️ {likes}</span>
+          </button>
+          <button class="actionButton" onClick={(e) => e.stopPropagation()}>
+            <span>💬 {comments}</span>
+          </button>
+          <button class="actionButton" onClick={(e) => e.stopPropagation()}>
+            <span>👁️ {views}</span>
+          </button>
         </div>
       </div>
-      <div class="list-item-footer">
-        <img class="list-item-avatar" src={profileImageUrl}></img>
-        <div class="list-item-user">{nickname}</div>
-      </div>
-    </div>
+    </article>
   );
 }

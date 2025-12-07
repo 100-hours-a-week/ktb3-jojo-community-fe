@@ -10,6 +10,7 @@ import { useState } from "../../core/hooks/useState.js";
 import { useNavigate } from "../../core/router.js";
 import { PATHS } from "../../shared/routing/paths.js";
 import { useEffect } from "../../core/hooks/useEffect.js";
+import { AuthStore } from "../../shared/state/AuthStore.js";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -28,16 +29,26 @@ export default function LoginPage() {
 
     const payload = { email, password };
 
-    await fetchWrapper.post({
+    const res = await fetchWrapper.post({
       url: SERVER_URL.USER.LOGIN,
       payload,
       onSuccess: (res) => {
         const { data, message } = res;
         fetchWrapper.setAccessToken(data.accessToken);
         alert(message);
-        useNavigate(PATHS.ARTICLE_LIST);
       },
     });
+
+    if (res?.data?.accessToken) {
+      const currentUser = await fetchWrapper.get({
+        url: SERVER_URL.USER.CURRENT,
+      });
+      AuthStore.notify({
+        isLoggedIn: true,
+        user: currentUser?.data ?? null,
+      });
+      useNavigate(PATHS.ARTICLE_LIST);
+    }
   };
 
   const handleChangeEmail = (e) => {

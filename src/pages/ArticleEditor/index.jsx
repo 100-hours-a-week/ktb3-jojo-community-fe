@@ -92,16 +92,26 @@ export default function ArticleEditPage({ params = {} }) {
 
     setHelperText("");
 
-    const payload = {
+    const postPayload = {
       title: trimmedTitle,
       content: trimmedContent,
+      imageUrls: images,
+    };
+
+    const putPayload = {
+      title: trimmedTitle,
+      contents: trimmedContent,
       imageUrls: images,
     };
 
     if (isEditMode) {
       const response = await fetchWrapper.put({
         url: SERVER_URL.ARTICLE.UPDATE(articleId),
-        payload,
+        payload: {
+          title: trimmedTitle,
+          contents: trimmedContent,
+          imageUrls: images,
+        },
       });
 
       if (response?.data || response?.message) {
@@ -112,11 +122,17 @@ export default function ArticleEditPage({ params = {} }) {
 
     const response = await fetchWrapper.post({
       url: SERVER_URL.ARTICLE.CREATE,
-      payload,
+      payload: {
+        title: trimmedTitle,
+        content: trimmedContent,
+        imageUrls: images,
+      },
     });
 
     if (response?.data?.articleId) {
-      navigate(PATHS.ARTICLE_DETAIL(response.data.articleId));
+      navigate(PATHS.ARTICLE_DETAIL(response.data.articleId), {
+        replace: true,
+      });
     }
   };
 
@@ -124,7 +140,6 @@ export default function ArticleEditPage({ params = {} }) {
 
   return (
     <div class="container">
-      <div id="header" class="header"></div>
       <div id="write">
         <div class="container-item">
           <div class="write-box flex_col_center_gap1">

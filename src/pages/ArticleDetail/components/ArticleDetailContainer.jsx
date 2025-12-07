@@ -2,7 +2,7 @@ import { createElement } from "../../../vdom.js";
 import { ActionsBtn } from "./ActionsBtn.js";
 import { StatComponent } from "./StatComponent.js";
 import { CommentItem } from "./CommentItem.js";
-import { useEffect } from "../../../core/hooks/useEffect.js";
+import { formatTimeAgo } from "../../../shared/lib/utils/formatDate.js";
 
 export function ArticleDetailContainer({
   article,
@@ -36,12 +36,10 @@ export function ArticleDetailContainer({
               <img class="avatar" src={author?.profileImageUrl || ""} />
               <div class="detail-author-nickname">{author?.nickname || ""}</div>
             </div>
-            <div class="detail-header-meta-date">{createdAt}</div>
+            <div class="detail-header-meta-date">{formatTimeAgo(createdAt)}</div>
           </div>
           <div class="action-btn-slot">
-            {isMyContents ? (
-              <ActionsBtn onEdit={onEdit} onDelete={onDelete} />
-            ) : null}
+            {isMyContents && <ActionsBtn onEdit={onEdit} onDelete={onDelete} />}
           </div>
         </div>
       </div>
