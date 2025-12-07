@@ -14,7 +14,10 @@ export function createElement(type, config, ...children) {
     }
   }
 
-  return { type, props, key, children: children.flat() };
+  const flatChildren = children.flat();
+  props.children = flatChildren;
+
+  return { type, props, key, children: flatChildren };
 }
 
 export function Fragment(props) {
