@@ -19,51 +19,18 @@
 - Vanilla JS (Custom Virtual DOM & Fiber-like Instance)
 - SWC (JSX → createElement 변환용)
 
-## 3. 동작 영상
+## 3. 상세 화면
+
+### 3.1 스크린샷
+
+![onboardingPage](docs/onboarding_page_screen_shot.jpg)
+![mainPage](docs/main_page_screen_shot.jpg)
+
+### 3.2 구현 영상
 
 https://youtu.be/_ruGQ9Sz7FI
 
 ## 4. Virtual DOM 아키텍처
-
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="260" viewBox="0 0 900 260">
-
-  <!-- Arrowhead -->
-  <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
-      <polygon points="0 0, 6 3, 0 6" fill="#61dafb"/>
-    </marker>
-  </defs>
-
-  <!-- Component -->
-  <rect x="40" y="70" width="180" height="110" fill="#fff" stroke="#d0d7de" rx="14"/>
-  <text x="130" y="115" font-size="18" font-weight="600" text-anchor="middle" fill="#24292f">Component()</text>
-  <text x="130" y="140" font-size="13" text-anchor="middle" fill="#57606a">Function Component</text>
-
-  <!-- VDOM -->
-  <rect x="250" y="70" width="180" height="110" fill="#fff" stroke="#d0d7de" rx="14"/>
-  <text x="340" y="115" font-size="18" font-weight="600" text-anchor="middle" fill="#24292f">Virtual DOM</text>
-  <text x="340" y="140" font-size="13" text-anchor="middle" fill="#57606a">VNode Object</text>
-
-  <!-- Instance -->
-  <rect x="460" y="70" width="180" height="110" fill="#fff" stroke="#d0d7de" rx="14"/>
-  <text x="550" y="115" font-size="18" font-weight="600" text-anchor="middle" fill="#24292f">Instance</text>
-  <text x="550" y="140" font-size="13" text-anchor="middle" fill="#57606a">Fiber-like Node</text>
-
-  <!-- DOM -->
-  <rect x="670" y="70" width="180" height="110" fill="#fff" stroke="#d0d7de" rx="14"/>
-  <text x="760" y="115" font-size="18" font-weight="600" text-anchor="middle" fill="#24292f">Real DOM</text>
-  <text x="760" y="140" font-size="13" text-anchor="middle" fill="#57606a">Browser Node</text>
-
-  <!-- Arrows -->
-  <line x1="220" y1="125" x2="250" y2="125" stroke="#61dafb" stroke-width="3" marker-end="url(#arrow)"/>
-  <line x1="430" y1="125" x2="460" y2="125" stroke="#61dafb" stroke-width="3" marker-end="url(#arrow)"/>
-  <line x1="640" y1="125" x2="670" y2="125" stroke="#61dafb" stroke-width="3" marker-end="url(#arrow)"/>
-
-  <!-- Caption -->
-  <text x="450" y="210" text-anchor="middle" font-size="13" fill="#57606a">
-    Component → VDOM → Instance → DOM 으로 이어지는 커스텀 렌더링 파이프라인
-  </text>
-</svg>
 
 ### 4.1 핵심 개념
 
