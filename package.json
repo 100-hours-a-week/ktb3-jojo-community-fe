@@ -5,7 +5,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf dist && swc src -d dist && mkdir -p dist/src/assets && cp -R src/assets/* dist/src/assets",
-    "build:watch": "rm -rf dist && swc src -d dist && mkdir -p dist/assets && cp -R src/assets/* dist/assets -w"
+    "build:watch": "rm -rf dist && swc src -d dist && mkdir -p dist/assets && cp -R src/assets/* dist/assets -w",
+    "serve": "live-server --port=5500",
+    "start": "npm run build && npm run serve"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +15,7 @@
   "description": "",
   "devDependencies": {
     "@swc/cli": "^0.7.9",
-    "@swc/core": "^1.15.2"
+    "@swc/core": "^1.15.2",
+    "live-server": "^1.2.2"
   }
 }
