@@ -273,11 +273,20 @@ JSX를 변환하기 위해 프로젝트 루트에 `.swcrc` 파일을 생성합�
 ```json
 {
   "scripts": {
-    "build": "swc src -d dist",
-    "dev": "swc src -d dist --watch"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf dist && swc src -d dist && mkdir -p dist/src/assets && cp -R src/assets/* dist/src/assets",
+    "build:watch": "rm -rf dist && swc src -d dist && mkdir -p dist/assets && cp -R src/assets/* dist/assets -w",
+    "serve": "live-server --port=5500",
+    "start": "npm run build && npm run serve"
   }
 }
 ```
+
+```shell
+npm run start
+```
+
+build 후 live-server 실행
 
 ### 5.2 기본 사용법
 
